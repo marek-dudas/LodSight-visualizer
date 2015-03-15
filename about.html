@@ -413,18 +413,26 @@ table tr td
         	<img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
         	</div>
     	
-        <div style="width:1100px;" id="site_content">
+        <div style="width:700px;" id="site_content">
         
         	<h1>About this app</h1>
-        	This software visualizes stored summarizations of linked datasets created by LodSight-summarizer.
+        	
+        	<h2>LodSight-visualizer</h2>
+        	This software visualizes stored summarizations of linked datasets created by LodSight-summarizer. It obtains them from LodSight-graph-creator.
+        	Its source code is available on GitHub as <a href="https://github.com/marek-dudas/LodSight-visualizer">LodSight-visualizer
+        	</a>.
         	
         	<h2>LodSight-summarizer</h2>
-        	LodSight-summarizer is an experimental implementation of a <a href="lodsight.pdf">summarization algorithm draft</a> 
-        	which combines frequent paths and characteristic sets, creates a type-property graph summarization of
+        	LodSight-summarizer is an experimental implementation of a dataset summarization algorithm 
+        	which creates a (data)type-property graph summarization of
         	an LOD dataset by accessing its SPARQL endpoint and stores the results into a relational db for
-        	offline viewing. 
+        	offline viewing. <a href="https://github.com/marek-dudas/LODSight">Look at the source code.</a>
         	
-        	<h2>Available Datasets</h2>
+        	<h2>LodSight-graph-creator</h2>
+        	LodSight-visualizer gets the summarization through a simple php application <a href="https://github.com/marek-dudas/LodSight-graph-creator">
+        	LodSight-graph-creator</a>. It returns selected summarization as an easily displayable json object.
+        	
+        	<h3>Available Datasets</h3>
         	Only a few datasets were experimentally summarized so far. If you want your dataset to be added
         	contact us at <a href="mailto:marek.dudas@vse.cz">marek.dudas@vse.cz</a>.
 	        

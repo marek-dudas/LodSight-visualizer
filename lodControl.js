@@ -1,18 +1,109 @@
 function LodControl(view) {
 	this.view = view;
 	this.model = null;
+	this.lodSparqler = null;
+	this.selectedExampleIndex = 0;
 }
 
 LodControl.prototype.viewModel = function(model) {
+	var isFirstLoad = true;
 	if(this.model != null) {
 		this.model.empty();
-		this.view.updateView();
+		this.view.updateView(this);
+		isFirstLoad = false;
 	}
 	this.model = model;
 	this.view.setData(this.model);
-	this.view.updateView();
+	this.updateView(isFirstLoad);
 }
 
+LodControl.prototype.updateView = function(controls) {
+	this.view.updateView(this);
+	if(controls) this.view.updateControls(this);
+}
+
+LodControl.prototype.loadModel = function(url) {
+	if(this.model != null) {
+		this.model.empty();
+		this.updateView(false);
+	}
+	LodLoader.loadLodModel(this, url);
+}
+
+LodControl.prototype.getMaxFrequency = function() {
+	if(this.model != null)	return this.model.maxFrequency;
+	else return 1;
+}
+
+LodControl.prototype.getCurrentFrequency = function() {
+	return LodLoader.minfreq;
+}
+
+LodControl.prototype.minFrequencyChaged = function(freq) {
+	LodLoader.setMinFreq(freq);
+	//this.loadModel(null);
+}
+
+LodControl.prototype.canvasMouseDown = function(location, node){
+	
+		//if(node!=null && this.model.nodes.indexOf(node)>=0) {
+			if(node==null) this.deselectLinks();
+			this.selectNode(node);
+			this.view.updateView(this);
+		//}
+};
+
+LodControl.prototype.deselectLinks = function() {
+	for(var i=0; i<this.model.linkNodes.length; i++) {
+		this.model.linkNodes[i].selectedLabelIndex = -1;
+	}
+}
+
+LodControl.prototype.linkLabelClick = function(linkNode, clickedIndex) {
+	if(clickedIndex<linkNode.labels.length)	
+	{
+		linkNode.selectedLabelIndex = clickedIndex;
+		this.view.updateView(this);
+	}
+}
+
+LodControl.prototype.selectNode = function(node) {
+	if(node == null) {
+		for(var i=0; i<this.model.nodes.length; i++){
+			this.model.nodes[i].selected = false;
+		}
+		this.selectedNode = null;
+	}
+	if(node!=null) {
+		node.selected = true;
+		this.selectedNode = node;
+	}
+	else {
+		this.selectedNode = null;
+	}
+};
+
+LodControl.prototype.loadExamples = function() {
+	if(this.lodSparqler==null)
+	{
+		if(this.model != null) this.lodSparqler = new LodSparqler(this.model);
+	}
+	if(this.lodSparqler!=null){
+		this.lodSparqler.loadExamples(this);
+	}
+}
+
+LodControl.prototype.changeExampleIndex = function() {
+	this.selectedExampleIndex++;
+	if(this.selectedExampleIndex>=this.model.exampleCount) this.selectedExampleIndex = 0;
+	this.view.updateView(this);
+}
+
+LodControl.prototype.getPrefixColorCode = function(prefix) {
+	var index = this.model.getPrefixIndex(prefix) % colorCodesCount;
+	if(index<0 || index>colorCodesCount) index = 0;
+	return index;
+}
 
 //ellipse a,b,x0,y0; line y=cx+d
 function ellipseLineIntersection(a,b,x0,y0,c,d) {
@@ -80,16 +171,55 @@ LodNode.prototype.linkIntersection = function(link, nearTo){
 	return nearEllipseIntersection(ellipse, link, nearTo);
 };
 
+function RectanglePath(y, width, height) {
+	return "M"+(-width/2)+","+(-height/2+y)+" l 0,"+(height)+" l "+width+",0 l 0,"+(-height)+" z";
+}
 
 function NodePath(width, height) {
 	return "M"+(0)+","+(-height/2)+" a"+width/2+" "+height/2+" 0 1 0 1,0 z";	
 }
 
+function LinkNodePath(width, height) {
+	return "M"+(-width/2)+","+(0)+" l "+width/2+","+height/2+" l "+width/2+","+(-height/2)+" l "+(-width/2)+","+(-height/2)+" z"; 
+}
+
 LodNode.prototype.getPathData = function() {
-	this.width=90;
-	this.height=40;
+	this.width=defaultNodeWidth;
+	this.height=defaultNodeHeight;
 	return NodePath(this.width, this.height);
 };
+
+LodLinkNode.prototype.getPathData = function() {
+	this.width=120;
+	this.height=this.labels.length*labelHeight;
+	return LinkNodePath(this.width, this.height);
+};
+
+String.prototype.visualLength = function()
+{
+    var ruler = document.getElementById("ruler");
+    ruler.innerHtml = this;
+    ruler.textContent = this;
+    return ruler.offsetWidth;
+}
+
+String.prototype.shortenTo = function(maxChars) {
+	if(this.length>maxChars) {
+		var partLength = (maxChars-3)/2.0;
+		return this.substring(0, partLength) + "..." + this.substring(this.length-partLength);
+	}
+	else return this;
+}
+
+LodLinkNode.prototype.getLabelY = function(index) {
+	return (index-this.labels.length/2.0)*labelHeight+(labelHeight/4.0);
+}
+
+LodLinkNode.prototype.getLabelBoundingPath = function(index, width) {
+	var y = this.getLabelY(index); //(index-this.labels.length/2.0)*labelHeight + labelHeight/2;
+	if(width>0) return RectanglePath(y, width, labelHeight);
+	else return "";
+}
 
 //rayEq: y=cx+d
 function rayLineIntersection(rayStart, rayEq, lineStart, lineEnd) {
@@ -129,18 +259,19 @@ function Line(start, end) {
 	this.end = end;
 }
 
-LodLink.prototype.countEndFromIntersection = function() {
+LodEdge.prototype.countEndFromIntersection = function() {
 	var intersection = this.end.linkIntersection(this, this.start);
 	this.endX = intersection.x;
 	this.endY = intersection.y;
 };
 
-LodLink.prototype.countStartFromIntersection = function() {
+LodEdge.prototype.countStartFromIntersection = function() {
 	var intersection = this.start.linkIntersection(this, this.end);
 	this.startX = intersection.x;
 	this.startY = intersection.y;
 };
 
+/*
 LodLink.prototype.getMiddlePoint = function() {
 	lineVec = new Point();
 	lineVec.x = this.end.x - this.start.x;
@@ -149,4 +280,8 @@ LodLink.prototype.getMiddlePoint = function() {
 	middle.x = this.start.x + 0.5*lineVec.x;
 	middle.y = this.start.y + 0.5*lineVec.y;
 	return middle;
-};
+};*/
+
+LodLinkNode.prototype.getMiddlePoint = function() {
+	return new Point(this.x, this.y);
+}

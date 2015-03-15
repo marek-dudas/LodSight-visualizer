@@ -1,26 +1,17 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE HTML>
+<html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>LODSight</title>
-        <!--
-        <link rel="stylesheet" href="dijit/themes/claro/claro.css">
-	
-		<script>dojoConfig = {parseOnLoad: true};</script>
-		<script src='dojo/dojo.js'></script>
-	
-		<script>
-			require(["dojo/parser", "dijit/Dialog"]); //, "dijit/form/Button", "dijit/form/TextBox", "dijit/form/DateTextBox", "dijit/form/TimeTextBox"
-		</script> -->
-	
+        <title>LODSight</title>	
 	
 		<script type="text/javascript" src="settings.js"></script>
 	    <script src="d3.v3.js"></script>
+	    <script src="sparql.js"></script>
+	    <script src="lodSparql.js"></script>
 	     <script src="lodModel.js"></script>
 	    <script src="lodControl.js"></script>
 	  	<script src="lodView.js"></script>
-		 <script src='dojo/dojo.js'></script>
+		 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
         <script src="lodLoader.js"></script>
         <script src="lodApp.js"></script>
 	  	
@@ -307,7 +298,9 @@ ul#menu li a:hover
   margin: 0 0 20px 0;}
   
 table
-{ margin: 10px 0 30px 0;}
+{ margin: 10px 0 30px 0;
+  font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;
+}
 
 table tr th, table tr td
 { background: #3B3B3B;
@@ -322,7 +315,7 @@ table tr td
 
 	/* visualizer styles */		
 		text {
-		  font: 16px Helvetica Neue, Helvetica, Arial, sans-serif;
+		  font: 12px Helvetica Neue, Helvetica, Arial, sans-serif;
 		  text-anchor: middle;
 		  pointer-events: none;
 		  alignment-baseline: middle;
@@ -337,18 +330,30 @@ table tr td
 		}
 				
 		.node path {
-			fill: #FFEECA;
+			/*fill: #FFEECA;*/
+			opacity: 0.4;
 			cursor: pointer;
 			stroke: #ccc;
 			stroke-width: 1px;
 		}		
 		
-		path.selected {
-			fill: #FFC125 !important;
+		path.selected {			
+			fill: #FF0000 !important;
+			opacity: 0.5 !important;
+		}
+		
+		text.linklabelpart.selected {
+			fill: #ff0000 !important;
+		}
+		
+		.linklabel:hover text {
+			fill: #777777
 		}
 		
 		.selected path {
-			fill: #FFC125 !important;
+			/*fill: #FFC125 !important;*/
+			fill: #FF4444 !important;
+			opacity: 0.4 !important;
 		}
 		
 		.node path:hover {
@@ -361,7 +366,11 @@ table tr td
 		
 		.linklabelholder text {
 			font-size: 14;
-			fill: #777777
+			/*fill: #777777*/
+		}
+		
+		.exampleLabelHolder {
+			text-anchor: middle;
 		}
 		
 		.typelabel text {
@@ -421,44 +430,99 @@ table tr td
 			color: grey;
 			font-weight: bold;
 		}
+		
+		#ruler { visibility: hidden; white-space: nowrap; 
+			font: 16px Helvetica Neue, Helvetica, Arial, sans-serif;}
 	</style>
 
     </head>
     <body>
-    		
+    		<span id="ruler"></span>
     		<div id="logo">
     		<div style="float:left">
 	    		<h1>LodSight</h1>	        	
 	        	<h2 style="display:inline">An RDF dataset summarization tool</h2>
-	        	<a href="about.html">Learn more</a>
+	        	<a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>
         	</div>
         	<img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
         	</div>
     	
-        <div style="width:1100px;" id="site_content">
+        <div style="width:1100px; margin-bottom:20px" id="site_content">
         
         	
-        	<h3>Available dataset summarizations: </h3>
-	        <iframe style="background-color: white"src="http://192.168.1.2/lodsight" width="100%" height="200px">
+        	<h4>Available dataset summarizations: </h4>
+	        <iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight-graph-creator" width="100%" height="200px"> 
+	        <!-- src="http://lod2-dev.vse.cz/lodsight/graph-creator http://localhost/lodsight-graph-creator" -->
 	        </iframe>       
 	        
 	        <div style="text-align: justify;">
-	        	<h3 style="font-weight: bold" id="spanDatasetName"></h3> 
-	        	Displayed dataset
+	        	Displayed dataset: <h3 style="font-weight: bold; display:inline" id="spanDatasetName"></h3> 	        	
 	        </div>
 	        <div style = "width:1085px; height:500px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
 	        </div>	 
-	        <div style="float:right; margin: 4px">
-	        <input type="button" value="Start/Stop Auto-Layout" id="btnLayout"  class="button">
-	        
-	        <input type="checkbox" id="boxViewSets" checked="checked"> Show additional predicates</div>
-	        <h3>Namespace prefixes:</h3>
-	        <div id="divPrefixList">
+	        <div>
+	        	<table>
+	        		<tr>
+	        			<td>
+		        			Detail: <span id="spnLOD">100</span>%
+				        	<input type="range" min="1" max="100" value="1" step="5" id="rngMinFreq">
+					        <input type="button" value="Update" id="btnUpdate" class = "button"> </td>
+					    <td>
+					        <input type="checkbox" id="boxViewSets" checked="checked"> Show datatypes </td>
+					    <td>
+				        	<input type="button" value="Load examples for selected nodes" id="btnExamples" class="button">
+				        	
+				        	<input type="button" value="Next example" id="btnChangeExample" class="button"></td>
+			        	<td>
+				        	<input type="button" value="Start/Stop Auto-Layout" id="btnLayout"  class="button"></td>
+				        <td>
+				        	<input type="button" value="Font Size +" id="btnFontPlus" class="button">
+				        
+				        	<input type="button" value = "Font Size -" id="btnFontMinus" class="button">
+				        	</td>				        
+			        </tr>
+	        	</table>
+	        </div>
+	        <div style="float:left; width:400px" id="divPrefixList">
+	        	<h3>Namespace prefixes:</h3>
 	        </div>
 	        
+	        <div style="float:right; width:600px">
+	        	<h4 id="help">What is this</h4>
+	        		<ul>
+	        			<li>This app shows summarizations of linked datasets: graphs created from classes and predicates 
+	        				that connect instances of these classes in the dataset.</li>
+	        			<li>Summarizations are created offline and only some are available at the moment.
+	        				<a href="about.html">Learn more and contact us to get your dataset visualized here.</a></li>
+	        			<li>Nodes from different namespaces have different color. 
+	        				The namespace prefixes are defined at the bottom-left part of the page.</li>
+	        		</ul>
+	        	<h4>How to use</h4>
+	        	<ul>
+	        		<li>Click on one of the dataset links at the top of the page to see its visualization.</li>
+	        		<li><b>Zoom</b> in or out with the mousewheel or equivalent scrolling controls.</li>
+	        		<li><b>Move around the visualization</b> by clicking outside nodes and holding&moving the mouse ("drag&drop").</li>
+	        		<li><b>Move the nodes</b> by similar "drag&drop" means.</li>
+	        		<li>Prevent (or encourage) nodes from "jumping around" by clicking on <b>"start/stop auto layout."</b></li>
+	        		<li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count threshold. 
+	        			The higher the threshold, the more instantiations the combination of classes and predicates 
+	        			must have to be displayed.
+	        			After setting the slider, click "Update" and wait a few seconds for reload.
+	        			</li>
+	        		<li><b>"Show datatypes"</b> checkbox controls whether datatype properties are displayed.</li>
+	        		<li><b>Select</b> class nodes and predicates by left-clicking on them. Right-click cancels the selection.</li>
+	        		<li>Clicking <b>"Load examples for selected nodes"</b> shows examples of instances of 
+	        			selected classes connected by selected predicates (above the class nodes).
+	        			</li>
+	        		<li><b>"Next Example"</b> button loads another example combination of instances for selected class&predicate combination.</li>
+	        		<li><b>"Font Size"</b> buttons increase or decrease font size of class node labels.</li>
+	        		<li>Tip: you can achieve a sort of <b>fullscreen</b> view by zooming-in at the browser level 
+	        			(e.g. click outside the visualization window, then hold CTRL and scroll-up with mousewheel), thus enlarging the visualization window,
+	        			and then zooming-out at the visualization level (click inside the visualization window and scroll-down with mousewheel).</li>
+	        	</ul>
         </div>
     </body>   
     <script type="text/javascript">
-    	var app = new LodApp("canvas", 1085, 500);
+    	var LodSight = new LodApp("canvas", 1085, 500);
     </script>
 </html>

@@ -1,8 +1,10 @@
 function LodView(width, height, viewingElement){
 	this.width =  width;
 	this.height = height;
-	this.colors = d3.scale.category10();
+	this.colors = d3.scale.category20();
     this.layoutRunning = true;
+    
+    this.textSize = minTextSize;
 	    
 	this.svg = d3.select("#"+viewingElement)
 		.append("svg")
@@ -14,22 +16,24 @@ function LodView(width, height, viewingElement){
 	this.svg.append('svg:defs').append('svg:marker')
 	    .attr('id', 'end-arrow')
 	    //.attr('viewBox', '0 -5 10 10')
-	    .attr('refX', 9.5)
-	    .attr('refY', 6)
-	    .attr('markerWidth', 13)
-	    .attr('markerHeight', 13)
+	    .attr('refX', 3)//9.5
+	    .attr('refY', 2)//6
+	    //.attr('markerUnits', 'userSpaceOnUse')
+	    .attr('markerWidth', 4)//13
+	    .attr('markerHeight', 4)//13
 	    .attr('orient', 'auto')
   	.append('svg:path')
 	    //.attr('d', 'M0,-5L10,0L0,5')
-	    .attr('d', 'M2,2 L2,11 L10,6')
+	    //.attr('d', 'M2,2 L2,11 L10,6')
+  		.attr('d', 'M0 0 L4 2 L0 4 Z')
 	    .style("fill", "#ccc");
 
 	this.svg.append('svg:defs').append('svg:marker')
 	    .attr('id', 'start-arrow')
 	    .attr('viewBox', '0 -5 10 10')
 	    .attr('refX', 4)
-	    .attr('markerWidth', 3)
-	    .attr('markerHeight', 3)
+	    .attr('markerWidth', 3)//3
+	    .attr('markerHeight', 3)//3
 	    .attr('orient', 'auto')
   	.append('svg:path')
     	.attr('d', 'M10,-5L0,0L10,5')
@@ -37,35 +41,41 @@ function LodView(width, height, viewingElement){
     	    
     this.rootSvg = this.svg;	
     this.svg = this.svg.append("svg:g");    
-    	
-    	this.nodes = this.svg.append("svg:g").selectAll("g");
+    
+    
+
 		this.edges = this.svg.append("svg:g").selectAll("line");
+    	this.nodes = this.svg.append("svg:g").selectAll("g");
 		this.linktext = this.svg.append("svg:g").selectAll("g.linklabelholder");
 		
 		//this.prefixes = this.svg.select("#divPrefixList").selectAll("div");
-		
-				// create the zoom listener
-		var zoomListener = d3.behavior.zoom()
-		  .scaleExtent([0.1, 2])
-		  .on("zoom", zoomHandler);
-		  //.on("dblclick.zoom", function(){});
-		
 		var mainG = this.svg;
 		// function for handling zoom event
 		function zoomHandler() {
 			var scale = 1 - ( (1 - d3.event.scale) * 0.1 );
 		  mainG.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+		  LodSight.view.textSize = minTextSize / d3.event.scale;
+		  d3.selectAll(".nodename").style("font-size", LodSight.view.textSize+"px");
 		}
+				// create the zoom listener
+		this.zoomListener = d3.behavior.zoom()
+		  .scaleExtent([0.1, 2])
+		  .on("zoom", zoomHandler);
+		  //.on("dblclick.zoom", function(){});		
 				
-		zoomListener(this.rootSvg);
-		this.rootSvg.on("dblclick.zoom", null);
+		this.zoomListener(this.rootSvg);
+		//this.rootSvg.on("dblclick.zoom", null); //disables zooming on double click
 		
-		this.initControls();
 };
 
-LodView.prototype.initControls = function() {
+LodView.prototype.initControls = function(controller) {
 
 	var view = this;
+	
+	this.rootSvg.on("contextmenu", function(){
+		controller.canvasMouseDown(d3.mouse(this), null);
+		d3.event.preventDefault();
+	});
 	
 	d3.select("#btnLayout").on("click", function(){
 		if(view.layoutRunning) {
@@ -81,17 +91,59 @@ LodView.prototype.initControls = function() {
 	
 	d3.select("#boxViewSets").on("click", function() {
 		view.updateView();
+	});
+	
+	d3.select("#btnExamples").on("click", function() {
+		controller.loadExamples();
+	});
+	
+	d3.select("#btnChangeExample").on("click", function() {
+		controller.changeExampleIndex();
+	});
+	
+	d3.select("#btnUpdate").on("click", function() {
+		controller.loadModel(null);
+	});
+	
+	d3.select("#rngMinFreq").on("input", function() {
+		controller.minFrequencyChaged(this.value);
+		LodSight.view.updateDetailLabel(this.value);
+	});	
+	
+	d3.select("#btnFontPlus").on("click", function() {
+		LodSight.view.textSize+=2;
+		maxTextSize+=2;
+		controller.updateView();
 	})
+	
+	d3.select("#btnFontMinus").on("click", function() {
+		LodSight.view.textSize-=2;
+		maxTextSize-=2;
+		controller.updateView();
+	})
+	
 };
+
+LodView.prototype.updateDetailLabel = function(value) {
+	d3.select("#spnLOD").text(
+			Math.round(100 - value / d3.select("#rngMinFreq").property("max") * 100));
+}
+
+LodView.prototype.updateControls = function(controller) {
+	d3.select("#rngMinFreq").property("max", controller.getMaxFrequency())
+	.property("step", controller.getMaxFrequency()/frequencyStepCount)
+	.property("value", controller.getCurrentFrequency());
+	this.updateDetailLabel(controller.getCurrentFrequency());
+}
 
 LodView.prototype.startLayout = function() {
 	var thisView = this;
 	this.layout = d3.layout.force()
 	    .size([this.width, this.height])
 	    .nodes(this.model.nodes)
-	    .links(this.model.links)
-	    .linkDistance(220) //200
-	    .charge(-6000) //-1500
+	    .links(this.model.edges)  //(this.model.links)
+	    .linkDistance(layoutLinkDistance) //200
+	    .charge(layoutCharge) //-1500
 	    .on("tick", function() {
 	    	thisView.tick();	
 	    	
@@ -101,12 +153,13 @@ LodView.prototype.startLayout = function() {
 };
 
 LodView.prototype.setData = function(model) {
+	this.tickCounter = 0;
 	this.model = model;
 	this.startLayout();
 };
 
 LodView.prototype.tick = function() {
-	if(this.model.links.length>0 && this.edges.length>0){
+	if(this.model.edges.length>0 && this.edges.length>0){
 		this.edges.attr("x1", function(d) { d.countStartFromIntersection(); return d.startX; })
 	     .attr("y1", function(d) { return d.startY; })
 	     .attr("x2", function(d) { d.countEndFromIntersection(); return d.endX;})
@@ -125,36 +178,98 @@ LodView.prototype.tick = function() {
 	    this.nodes.attr('transform', function(d) {
     		return 'translate(' + d.x + ',' + d.y + ')';
   		});
+    
+	    if(this.tickCounter>=0) this.tickCounter++;
+	    if(this.tickCounter>ticksToSetDefaultZoom) {
+	    	var minX =10000;
+	    	var minY = 10000;
+	    	var maxX = 0;
+	    	var maxY = 0;
+	    	for(var i=0; i<this.model.nodes.length; i++) {
+	    		if(this.model.nodes[i].x<minX) minX = this.model.nodes[i].x;
+	    		if(this.model.nodes[i].y<minY) minY = this.model.nodes[i].y;
+	    		if(this.model.nodes[i].x>maxX) maxX = this.model.nodes[i].x;
+	    		if(this.model.nodes[i].y>maxY) maxY = this.model.nodes[i].y;
+	    	}
+	    	var modelWidth = maxX-minX;
+	    	var modelHeight = maxY-minY;
+	    	var scale = Math.min(this.width/modelWidth, (this.height-50)/modelHeight)
+	    	
+	    	zoomWidth = (this.width-scale*this.width)/2
+	    	zoomHeight = (this.height-scale*this.height)/2
+	    	
+	    	this.svg.attr("transform", "translate("+zoomWidth+","+zoomHeight+") scale("+scale+")");
+	    	//d3.behavior.zoom().translate([zoomWidth,zoomHeight]).scale(scale);
+	    	this.zoomListener.translate([zoomWidth,zoomHeight]).scale(scale);
+	    	this.tickCounter = -1;
+	    	this.textSize = minTextSize/scale;
+	    	this.nodes.selectAll(".nodename")
+		 		.style("font-size", this.textSize+"px");   
+	    }
     }
 };
 
-LodView.prototype.updateView = function() {
+LodView.prototype.updateView = function(controller) {
+
+    var view = this;
     
-    this.edges = this.edges.data(this.model.links, function(d) {return d.id;});    
+    this.edges = this.edges.data(this.model.edges, function(d) {return d.id;});    
     
 	this.edges.enter()
 	        .append("line")
 	        .style("stroke", "#ccc")
-	        .style("stroke-width", 2)
+	        .style("stroke-width", function(d) {
+	        	var strokeWidth = d.frequency / view.model.maxFrequency * maxEdgeWidth;
+	        	if(strokeWidth<minEdgeWidth) strokeWidth = minEdgeWidth;
+	        	return strokeWidth;
+	        }) //2
 		    .style('marker-start', function(d) { return d.left ? 'url(#start-arrow)' : ''; })
 		    .style('marker-end', function(d) { return d.right ? 'url(#end-arrow)' : ''; });
 		    
 		    
-	this.linktext = this.linktext.data(this.model.links, function(d) {return d.id;});
+	this.linktext = this.linktext.data(this.model.linkNodes, function(d) {return d.id;}); //this.linktext.data(this.model.links, function(d) {return d.id;});
     var linktextEnter =this.linktext.enter().append("g").attr("class", "linklabelholder");
     
-     var linktextEnterText = linktextEnter.append("text")
-     .attr("class", "linklabel")
-     .attr("x", 1)
-     .attr("y", function (d) {return d.labels.length/2*(-12);})//".35em")
-     .attr("text-anchor", "middle");
+    var labelCount = this.model.labelIndexLimit;
+    
+    /*for(var i=0; i<labelCount; i++) {
+ 		linktextEnter.append("path")
+    	.attr("d", function(d) {
+    		return d.getLabelBoundingPath(i, d.getLabel(i).visualLength());    		
+    	})    	
+ 		//.attr("x", 0)
+ 		//.attr("y", function(d) {return (i-d.labels.length/2.0)*labelHeight;})
+ 		.attr("x-lodsight:pathindex", function(d) {return i;})
+ 		.on("click", function(d) {
+ 			controller.linkLabelClick(d, this.attributes[1].value);
+ 		});
+    }*/
+    
+     
+     //.attr("x", 1)
+     //.attr("y", function (d) {return d.labels.length/2*(-12);})//".35em")
+     //.attr("text-anchor", "middle");
      //.text(function(d) { return d.getName(); });
 
      
-     	for(var i=0; i<this.model.labelIndexLimit; i++) {
-     		linktextEnterText.append("tspan")
+     	for(var i=0; i<this.model.labelIndexLimit; i++) {     	
+     		var linktextEnterText = linktextEnter.append("g")
+     	     .attr("class", "linklabel");
+     		
+     		linktextEnterText.append("path") //linktextEnter.append
+        	.attr("d", function(d) {
+        		return d.getLabelBoundingPath(i, d.getLabel(i).visualLength());    		
+        	})    	
+     		.attr("x-lodsight:pathindex", function(d) {return i;})
+     		.on("click", function(d) {
+     			controller.linkLabelClick(d, this.attributes[1].value);
+     		});
+     		
+     		linktextEnterText.append("text") //tspan
+     		.attr("class", "linklabelpart")
+     	     .attr("text-anchor", "middle")
      		.attr("x", 0)
-     		.attr("dy", 12) //function(d) {return d.getLabelY(i) * 12;})
+     		.attr("y", function(d) {return d.getLabelY(i)+(labelHeight/2.0); }) //function(d) {return d.getLabelY(i) * 12;})
      		.text(function(d) {return d.getLabel(i);});
      	}
     
@@ -170,8 +285,6 @@ LodView.prototype.updateView = function() {
         .on("drag", dragmove)
         .on("dragend", dragend);
         
-        var view = this;
-
 	    function dragstart(d, i) {
 	        view.layout.stop(); // stops the force auto positioning before you start dragging
 	        d3.event.sourceEvent.stopPropagation();
@@ -189,54 +302,91 @@ LodView.prototype.updateView = function() {
 	        d.fixed = true; // of course set the node to fixed so the force doesn't include the node in its auto positioning stuff
 	        view.tick();
 	        if(view.layoutRunning) view.layout.resume();
-	        view.drawVocabPaths();
 	    }
 	    
 	    //this.nodes.enter()
-	    var nodesEnter = this.nodes.enter().append("g")			
+	    var nodesEnter = this.nodes.enter().append("g")
+        	.on("click", function(d){
+        		controller.canvasMouseDown(d3.mouse(this), d);
+        	})			
 	        .call(node_drag)
 	        .classed("node",true); 
 	        //.append("circle")
 	        //.attr("r", 10)
 	    nodesEnter.append("path")
 	        .attr("d", function(d) {
-	        	return d.getPathData();});	        	
-	        //.style("fill", "#ccc");
+	        	return d.getPathData();})	        	
+	        .attr("fill", function(d) {
+	        	return controller.view.colors(controller.getPrefixColorCode(d.prefix));
+	        });
 	        
 	    nodesEnter.append("text")
 	    	.classed("nodename", true)
+	    	.style("font-size", this.textSize+"px")
 	    	.text(function(d) { return d.getName(); })	    	
-      		.style("font-size", function(d) { 
-      			return Math.max(Math.min(16, Math.min(d.width, (d.width - 8) 
-      			/ this.getComputedTextLength() * 14)), 13) + "px"; })      			
+      		/*.style("font-size", function(d) { 
+      			return Math.max(Math.min(
+      								maxTextSize, 
+      								Math.min(d.width, (d.width - 8) / this.getComputedTextLength() * 14)), 
+      							minTextSize) + "px"; })*/	    	
 			.attr("x","0")//function(d) {return d.width/2+2;})
 			.attr("y","0") 
 		     .attr("dx", 1)
 		     .attr("dy", ".35em");
+	    
+	    nodesEnter.append("text")
+	    	.classed("exampleLabelHolder", true)
+	    	.attr("x", function(d){
+	    		return -d.width/2.0;
+	    	})
+	    	.attr("y", function(d){
+	    		return -(d.height*0.1 + labelHeight);
+	    	});
 		     
-		 this.nodes.selectAll(".nodename").text(function(d) {return d.getName();});   
+		 this.nodes.selectAll(".nodename")
+		 	.text(function(d) {return d.getName();})
+		 	.style("font-size", this.textSize+"px"); ;   
 		 this.nodes.selectAll("path").classed("selected", function(d) {return d.selected;});
 		 
 		 d3.selectAll(".node").style("visibility", function(d) {
 			 if( (d.fromCSet && d3.select("#boxViewSets").node().checked == true) || !d.fromCSet) return "visible";
 			 else return "hidden";
-		 })
+		 });
+		 
+		 //d3.selectAll(".nodename").style("font-size", minTextSize); 
+				 /*function(d) { 
+   			return Math.max(Math.min(
+						maxTextSize, 
+						Math.min(d.width, (d.width - 8) / this.getComputedTextLength() * 14)), 
+					minTextSize) + "px"; });*/
 		 
 		 d3.selectAll("line").style("visibility", function(d) {
 			 if( (d.fromCSet && d3.select("#boxViewSets").node().checked == true) || !d.fromCSet) return "visible";
 			 else return "hidden";
-		 })
+		 });
 		 
 		 d3.selectAll(".linklabelholder").style("visibility", function(d) {
 			 if( (d.fromCSet && d3.select("#boxViewSets").node().checked == true) || !d.fromCSet) return "visible";
 			 else return "hidden";
-		 })
+		 });
 		 
+		 d3.selectAll(".linklabelpart").classed("selected", function (d) {
+			 if(d.getLabel(d.selectedLabelIndex)!="" && d.getLabel(d.selectedLabelIndex) == this.innerHTML) {
+				 return true;
+			 }
+			 else return false;
+		 });
+		 
+		 this.nodes.selectAll(".exampleLabelHolder").text( function(d) { 
+			 return d.getExample(LodSight.control.selectedExampleIndex).shortenTo(exampleStringLength); 
+		 });
+		 		 
 		this.nodes.exit().remove();
 		 
 		this.prefixes = d3.select("#divPrefixList").selectAll("div");
 	    this.prefixes = this.prefixes.data(this.model.prefixes);
 	    var prefixEnter = this.prefixes.enter().append("div")
+	    		.style("color", function(d) {return view.colors(view.model.prefixes.indexOf(d))})
 		    	.text(function (d) {return d;});
 	    this.prefixes.exit().remove();    
     
