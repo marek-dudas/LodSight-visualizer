@@ -11,7 +11,8 @@ function LodView(width, height, viewingElement){
 		.attr("width", width)
 		.attr("height", height)
 		.attr("xmlns", "http://www.w3.org/2000/svg") 
-		.attr("version", "1.1");
+		.attr("version", "1.1")
+		.attr("xmlns:xmlns:xlink", "http://www.w3.org/1999/xlink");
 		
 	this.svg.append('svg:defs').append('svg:marker')
 	    .attr('id', 'end-arrow')
@@ -47,7 +48,7 @@ function LodView(width, height, viewingElement){
 		this.edges = this.svg.append("svg:g").selectAll("line");
     	this.nodes = this.svg.append("svg:g").selectAll("g");
 		this.linktext = this.svg.append("svg:g").selectAll("g.linklabelholder");
-		
+				
 		//this.prefixes = this.svg.select("#divPrefixList").selectAll("div");
 		var mainG = this.svg;
 		// function for handling zoom event
@@ -105,10 +106,19 @@ LodView.prototype.initControls = function(controller) {
 		controller.loadModel(null);
 	});
 	
+	d3.select("#btnUpdatePredicates").on("click", function() {
+		controller.loadModel(null);
+	});
+	
 	d3.select("#rngMinFreq").on("input", function() {
-		controller.minFrequencyChaged(this.value);
+		controller.minFrequencyChanged(this.value);
 		LodSight.view.updateDetailLabel(this.value);
 	});	
+	
+	d3.select("#rngMaxFreq").on("input", function() {
+		controller.maxFrequencyChanged(this.value);
+		LodSight.view.updateMaxFreqLabel(this.value);
+	})
 	
 	d3.select("#btnFontPlus").on("click", function() {
 		LodSight.view.textSize+=2;
@@ -124,6 +134,11 @@ LodView.prototype.initControls = function(controller) {
 	
 };
 
+LodView.prototype.updateMaxFreqLabel = function(value) {
+	d3.select("#spnMaxFreq").text(
+			Math.round(value / d3.select("#rngMaxFreq").property("max") * 100));
+}
+
 LodView.prototype.updateDetailLabel = function(value) {
 	d3.select("#spnLOD").text(
 			Math.round(100 - value / d3.select("#rngMinFreq").property("max") * 100));
@@ -131,9 +146,14 @@ LodView.prototype.updateDetailLabel = function(value) {
 
 LodView.prototype.updateControls = function(controller) {
 	d3.select("#rngMinFreq").property("max", controller.getMaxFrequency())
-	.property("step", controller.getMaxFrequency()/frequencyStepCount)
+	.property("step", Math.ceil(controller.getMaxFrequency()/frequencyStepCount))
 	.property("value", controller.getCurrentFrequency());
 	this.updateDetailLabel(controller.getCurrentFrequency());
+	var maxFreqThreshold = controller.getMaxFrequency();
+	d3.select("#rngMaxFreq").property("max", maxFreqThreshold)
+	.property("step", 1) //maxFreqThreshold/frequencyStepCount)
+	.property("value", controller.getCurrentMaxFrequency());
+	this.updateMaxFreqLabel(controller.getCurrentMaxFrequency());
 }
 
 LodView.prototype.startLayout = function() {
@@ -332,8 +352,21 @@ LodView.prototype.updateView = function(controller) {
 			.attr("x","0")//function(d) {return d.width/2+2;})
 			.attr("y","0") 
 		     .attr("dx", 1)
-		     .attr("dy", ".35em");
+		     .attr("dy", 0);//".35em");
 	    
+	    nodesEnter.append("path")
+	    	.classed("exampleLabelClickArea", true)
+	    	.attr("x", function(d){
+	    		return -d.width/2.0;
+	    	})
+	    	.attr("y", function(d){
+	    		return -(d.height*0.1 + labelHeight);
+	    	})
+	    	.attr("d", function(d) {
+        		return RectanglePathPositioned(-100, -(d.height*0.1 + labelHeight), 270, labelHeight);    		
+        	})
+        	.on("click", function(d) {var uri=d.getExampleUri(LodSight.control.selectedExampleIndex); if(uri!="") window.open(uri, "_blank");});
+	    	
 	    nodesEnter.append("text")
 	    	.classed("exampleLabelHolder", true)
 	    	.attr("x", function(d){
@@ -342,6 +375,18 @@ LodView.prototype.updateView = function(controller) {
 	    	.attr("y", function(d){
 	    		return -(d.height*0.1 + labelHeight);
 	    	});
+	    
+	    /*
+	    nodesEnter.append("svg:a")
+    	.classed("exampleLabelUriHolder", true)
+    	.attr("x", function(d){
+    		return -d.width/2.0;
+    	})
+    	.attr("y", function(d){
+    		return -(d.height*0.1 + labelHeight);
+    	})
+    	.attr("target", "_blank")
+    	.append("text").classed("exampleLabelHolder", true);*/
 		     
 		 this.nodes.selectAll(".nodename")
 		 	.text(function(d) {return d.getName();})
@@ -379,16 +424,38 @@ LodView.prototype.updateView = function(controller) {
 		 
 		 this.nodes.selectAll(".exampleLabelHolder").text( function(d) { 
 			 return d.getExample(LodSight.control.selectedExampleIndex).shortenTo(exampleStringLength); 
-		 });
+		 }).on("click", function(d) {window.open(d.getExampleUri(LodSight.control.selectedExampleIndex), "_blank");});
+		 
+		/* this.nodes.selectAll(".exampleLabelUriHolder").attr( "xlink:xlink:href", function(d) { 
+			 return d.getExampleUri(LodSight.control.selectedExampleIndex); 
+		 });*/
 		 		 
 		this.nodes.exit().remove();
 		 
 		this.prefixes = d3.select("#divPrefixList").selectAll("div");
 	    this.prefixes = this.prefixes.data(this.model.prefixes);
-	    var prefixEnter = this.prefixes.enter().append("div")
-	    		.style("color", function(d) {return view.colors(view.model.prefixes.indexOf(d))})
-		    	.text(function (d) {return d;});
+	    var prefixEnter = this.prefixes.enter().append("div");
+	    prefixEnter.append("input").attr("type", "checkbox")
+	    	.on("mouseup", function(d) {
+	    		d.selected = !d3.select(this).node().checked;
+	    	})
+	    	.property("checked", function(d) {return d.selected});
+	    prefixEnter.append("span")
+		.style("color", function(d) {return view.colors(view.model.getPrefixIndex(d.str))})  //prefixes.indexOf(d.str))})
+    	.text(function (d) {return d.str;});
 	    this.prefixes.exit().remove();    
+	    
+	    this.predicates = d3.select("#divPredicateList").selectAll("tr");
+	    this.predicates = this.predicates.data(this.model.predicates);
+	    var predicateRows = this.predicates.enter().append("tr").style("margin", "none");
+	    predicateRows.append("td").append("input")
+    	.attr("type", "checkbox")
+    	.on("mouseup", function(d) {
+    			d.selected = !d3.select(this).node().checked;
+    		})
+    	.property("checked", function(d) {return d.selected});
+	    predicateRows.append("td").text(function(d) {return d.getName();});
+	    this.predicates.exit().remove();
     
     d3.select("#spanDatasetName").text(this.model.dataset);
     

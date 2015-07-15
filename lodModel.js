@@ -18,12 +18,22 @@ function LodNode(name, prefix, id, fromCSet) {
 	this.examples = [];
 }
 
-LodNode.prototype.addExample = function(example) {
-	this.examples.push(example);
+function LodExampleInstance(label, uri) {
+	this.label = label;
+	this.uri = uri;
+}
+
+LodNode.prototype.addExample = function(label, uri) {
+	this.examples.push(new LodExampleInstance(label, uri));
 }
 
 LodNode.prototype.getExample = function(index) {
-	if(index<this.examples.length) return this.examples[index];
+	if(index<this.examples.length) return this.examples[index].label;
+	else return "";
+}
+
+LodNode.prototype.getExampleUri = function(index) {
+	if(index<this.examples.length) return this.examples[index].uri;
 	else return "";
 }
 
@@ -195,12 +205,14 @@ function LodModel() {
 	this.dataset = "";
 	this.exampleCount = 0;
 	this.maxFrequency = 0;
+	this.predicates = [];
 }
 
 LodModel.prototype.getPrefixIndex = function(prefix) {
 	for(var i=0; i<this.prefixes.length; i++) {
 		//if(this.prefixes[i].startsWith(prefix+":")) return i; s.lastIndexOf(starter, 0)
-		if(this.prefixes[i].lastIndexOf(prefix+":",0)===0) return i;
+		if(this.prefixes[i].str.lastIndexOf(prefix+":",0)===0) return i;
+		if(this.prefixes[i].str == prefix) return i;
 	}
 	return -1;
 }
@@ -241,6 +253,13 @@ LodModel.prototype.addNode = function(name, prefix, fromCSet) {
 	this.nodes.push(node);
 	this.objectNodes.push(node);
 	return node;
+}
+
+LodModel.prototype.addPredicate = function(name, prefix, id, selected) {
+	var predicate = new LodResource(name, prefix, id);
+	predicate.selected = selected;
+	this.predicates.push(predicate);
+	return predicate;
 }
 
 LodModel.prototype.addLinkNode = function(name, prefix, fromCSet) {
@@ -298,6 +317,9 @@ LodModel.prototype.empty = function() {
 	}
 	while(this.prefixes.length) {
 		this.prefixes.pop();
+	}
+	while(this.predicates.length) {
+		this.predicates.pop();
 	}
 };
 

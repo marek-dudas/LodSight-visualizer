@@ -2,9 +2,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>LODSight</title>	
+        <title>LODSight 0.1</title>	
 	
 		<script type="text/javascript" src="settings.js"></script>
+		<script type="text/javascript" src="spin.min.js"></script>
 	    <script src="d3.v3.js"></script>
 	    <script src="sparql.js"></script>
 	    <script src="lodSparql.js"></script>
@@ -186,7 +187,6 @@ ul#menu li a:hover
   overflow: hidden;
   margin: 0 auto 0 auto;
   padding: 10px 10px 10px 10px;
-  background: #F6F6F0 url(back.png) repeat-y;
   border: 2px solid #ccc;} 
 
 .sidebar
@@ -299,7 +299,8 @@ ul#menu li a:hover
   
 table
 { margin: 10px 0 30px 0;
-  font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;
+  /*font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;*/
+  font: normal 0.9em trebuchet ms, sans-serif;
 }
 
 table tr th, table tr td
@@ -373,6 +374,14 @@ table tr td
 			text-anchor: middle;
 		}
 		
+		path.exampleLabelClickArea.selected {
+			opacity: 0.0 !important;
+		}
+		
+		.exampleLabelClickArea {
+			opacity: 0.0 !important;
+		}
+		
 		.typelabel text {
 			fill: #cccccc;
 		}
@@ -441,32 +450,55 @@ table tr td
     		<div id="logo">
     		<div style="float:left">
 	    		<h1>LodSight</h1>	        	
-	        	<h2 style="display:inline">An RDF dataset summarization tool</h2>
-	        	<a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>
+	        	<h2 style="display:inline">An RDF dataset summarization tool [v0.1]</h2>
+	        	<a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>&nbsp&nbsp<a href="/lodsight-v2">Checkout the new version!</a>
         	</div>
         	<img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
         	</div>
     	
-        <div style="width:1100px; margin-bottom:20px" id="site_content">
+        <div style="width:1290px; margin-bottom:20px" id="site_content">
         
         	
         	<h4>Available dataset summarizations: </h4>
 	        <iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight-graph-creator" width="100%" height="200px"> 
 	        <!-- src="http://lod2-dev.vse.cz/lodsight/graph-creator http://localhost/lodsight-graph-creator" -->
-	        </iframe>       
-	        
-	        <div style="text-align: justify;">
+	        </iframe> 
+	        <div style="text-align: center;">
 	        	Displayed dataset: <h3 style="font-weight: bold; display:inline" id="spanDatasetName"></h3> 	        	
+	        </div>      
+	        <div style="float:left; width:370px;">
+	        	<div>
+	        	<div style="text-align: justify">
+	        		<h3 style="display: inline-block;">Filtering Tools</h3>&nbsp&nbsp&nbsp<input type="button" value="Update Filters" id="btnUpdate" class = "button">
+	        	</div>
+		        <h4>Predicates in the graph:</h4>
+			        	<div style="border:2px solid #ccc;height:200px;overflow-y: scroll;" id="divPredicateList">
+			        	</div>
+			        	<br>
+			    </div>
+			    <div style="margin-bottom: 5px;">
+			        	Detail: <span id="spnLOD">100</span>%
+				        	<input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq">
+					         <br>
+					        Path frequency threshold: <span id="spnMaxFreq">100</span>%
+				        	<input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq">
+				</div>
+			    <div id="divPrefixList">
+		        	<h4>Namespace prefixes:</h4>
+		        </div>
+			    <input type="button" value="Update Filters" id="btnUpdatePredicates"  class="button">
+			    
+			    
+	        		
 	        </div>
-	        <div style = "width:1085px; height:500px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
+	        
+	        <div style = "float:right; width:900px; height:600px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
 	        </div>	 
-	        <div>
+	        <div style = "float:right;">
 	        	<table>
 	        		<tr>
 	        			<td>
-		        			Detail: <span id="spnLOD">100</span>%
-				        	<input type="range" min="1" max="100" value="1" step="5" id="rngMinFreq">
-					        <input type="button" value="Update" id="btnUpdate" class = "button"> </td>
+		        			
 					    <td>
 					        <input type="checkbox" id="boxViewSets" checked="checked"> Show datatypes </td>
 					    <td>
@@ -483,12 +515,11 @@ table tr td
 			        </tr>
 	        	</table>
 	        </div>
-	        <div style="float:left; width:400px" id="divPrefixList">
-	        	<h3>Namespace prefixes:</h3>
-	        </div>
 	        
-	        <div style="float:right; width:600px">
-	        	<h4 id="help">What is this</h4>
+	        <div style="float:right; width:900px">
+	        	<table >
+	        	<tr><td style="vertical-align: top">
+	        	<h4 id="help">What is This?</h4>
 	        		<ul>
 	        			<li>This app shows summarizations of linked datasets: graphs created from classes and predicates 
 	        				that connect instances of these classes in the dataset.</li>
@@ -497,18 +528,16 @@ table tr td
 	        			<li>Nodes from different namespaces have different color. 
 	        				The namespace prefixes are defined at the bottom-left part of the page.</li>
 	        		</ul>
-	        	<h4>How to use</h4>
+	        	</td>
+	        	<td style="vertical-align: top">
+	        	<h4>How to Use</h4>
 	        	<ul>
 	        		<li>Click on one of the dataset links at the top of the page to see its visualization.</li>
+	        		<li>Tick several datasets and click <b>"Load all selected datasets"</b> to see visualizations of several datasets merged into one graph.</li>
 	        		<li><b>Zoom</b> in or out with the mousewheel or equivalent scrolling controls.</li>
 	        		<li><b>Move around the visualization</b> by clicking outside nodes and holding&moving the mouse ("drag&drop").</li>
 	        		<li><b>Move the nodes</b> by similar "drag&drop" means.</li>
 	        		<li>Prevent (or encourage) nodes from "jumping around" by clicking on <b>"start/stop auto layout."</b></li>
-	        		<li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count threshold. 
-	        			The higher the threshold, the more instantiations the combination of classes and predicates 
-	        			must have to be displayed.
-	        			After setting the slider, click "Update" and wait a few seconds for reload.
-	        			</li>
 	        		<li><b>"Show datatypes"</b> checkbox controls whether datatype properties are displayed.</li>
 	        		<li><b>Select</b> class nodes and predicates by left-clicking on them. Right-click cancels the selection.</li>
 	        		<li>Clicking <b>"Load examples for selected nodes"</b> shows examples of instances of 
@@ -520,9 +549,25 @@ table tr td
 	        			(e.g. click outside the visualization window, then hold CTRL and scroll-up with mousewheel), thus enlarging the visualization window,
 	        			and then zooming-out at the visualization level (click inside the visualization window and scroll-down with mousewheel).</li>
 	        	</ul>
+	        	</td>
+	        	<td style="vertical-align: top">
+	        	<h4>Using the Filters</h4>
+			    <ul>
+			    <li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count threshold. 
+	        			The higher the threshold, the more instantiations the combination of classes and predicates 
+	        			must have to be displayed.
+	        			After setting the slider, click "Update Filters" and wait a few seconds for reload.
+	        			</li>
+	        		<li><b>Path frequency threshold</b> works analogously as <b>Detail</b>, but changes the maximum number of instantiations.</li>
+	        		<li><b>Predicates</b> list shows all predicates in the dataset. Tick some of them and click "Update Filters" to limit the visualized graph to paths containing the selected predicates.</li>
+	        		<li><b>Namespaces</b> list shows all ontologies used in the dataset. Tick some of them and click "Update Filters" to limit the visualization to entities from selected ontologies.</li>
+	        	</ul>
+	        	</td>
+	        	</tr>
+	        	</table>
         </div>
     </body>   
     <script type="text/javascript">
-    	var LodSight = new LodApp("canvas", 1085, 500);
+    	var LodSight = new LodApp("canvas", 900, 600);
     </script>
 </html>

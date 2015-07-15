@@ -6,9 +6,9 @@ function LodSparqler(model)
 	if(model.graph != null && model.graph != "") this.sparqler.addDefaultGraph(model.dataset); // inherited by all (future) queries
 	for(var i=0; i<model.prefixes.length; i++)
 	{
-		var colonPos = model.prefixes[i].indexOf(":");
-		var prefix = model.prefixes[i].substring(0,colonPos);
-		var ns = model.prefixes[i].substring(colonPos+2);
+		var colonPos = model.prefixes[i].str.indexOf(":");
+		var prefix = model.prefixes[i].str.substring(0,colonPos);
+		var ns = model.prefixes[i].str.substring(colonPos+2);
 		this.sparqler.setPrefix(prefix, ns);
 	}
 }
@@ -22,6 +22,8 @@ LodSparqler.prototype.loadExamples = function(controller)
 		var start = this.model.links[i].start;
 		var end = this.model.links[i].end;
 		if(start.selected && end.selected && (this.model.links[i].isSomeLabelSelected() || start != end)) {
+			whereClause += "?i"+start.id+" a "+start.getName()+" . ";
+			whereClause += "?i"+end.id+" a "+end.getName()+" . ";
 			whereClause += "?i"+start.id+" "+(this.model.links[i].getSelectedLabel())+" "+"?i"+end.id+" . ";
 			whereClause += "OPTIONAL { ?i"+start.id+" "+"<http://www.w3.org/2000/01/rdf-schema#label>"+" "+"?l"+start.id+" . ";
 			whereClause += "?i"+end.id+" "+"<http://www.w3.org/2000/01/rdf-schema#label>"+" "+"?l"+end.id+" . }";
@@ -37,10 +39,13 @@ LodSparqler.prototype.loadExamples = function(controller)
 			var binding = json.results.bindings[j];
 			for(var i=0; i<objectIndexes.length; i++) {
 				var placeholder = "l"+objectIndexes[i];
-				if(!(placeholder in binding) || binding[placeholder].value=="") placeholder = "i"+objectIndexes[i];
+				var uriPlaceholder = "i"+objectIndexes[i];
+				if(!(placeholder in binding) || binding[placeholder].value=="") placeholder = uriPlaceholder;
 				var value = "";
 				if(placeholder in binding) value = binding[placeholder].value;
-				model.getObjectNode(objectIndexes[i]).addExample(value);
+				var uri = null;
+				if(uriPlaceholder in binding) uri = binding[uriPlaceholder].value;
+				model.getObjectNode(objectIndexes[i]).addExample(value, uri);
 			}
 		}
 		controller.updateView();

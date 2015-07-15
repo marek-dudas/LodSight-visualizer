@@ -7,6 +7,7 @@ function LodControl(view) {
 
 LodControl.prototype.viewModel = function(model) {
 	var isFirstLoad = true;
+	if(LodLoader.maxfreq > model.maxFrequency) LodLoader.setMaxFreq(model.maxFrequency);
 	if(this.model != null) {
 		this.model.empty();
 		this.view.updateView(this);
@@ -24,6 +25,8 @@ LodControl.prototype.updateView = function(controls) {
 
 LodControl.prototype.loadModel = function(url) {
 	if(this.model != null) {
+		LodLoader.setPredicates(this.model.predicates);
+		LodLoader.setNamespaces(this.model.prefixes);
 		this.model.empty();
 		this.updateView(false);
 	}
@@ -39,8 +42,17 @@ LodControl.prototype.getCurrentFrequency = function() {
 	return LodLoader.minfreq;
 }
 
-LodControl.prototype.minFrequencyChaged = function(freq) {
+LodControl.prototype.minFrequencyChanged = function(freq) {
 	LodLoader.setMinFreq(freq);
+	//this.loadModel(null);
+}
+
+LodControl.prototype.getCurrentMaxFrequency = function() {
+	return LodLoader.maxfreq;
+}
+
+LodControl.prototype.maxFrequencyChanged = function(freq) {
+	LodLoader.setMaxFreq(freq);
 	//this.loadModel(null);
 }
 
@@ -173,6 +185,10 @@ LodNode.prototype.linkIntersection = function(link, nearTo){
 
 function RectanglePath(y, width, height) {
 	return "M"+(-width/2)+","+(-height/2+y)+" l 0,"+(height)+" l "+width+",0 l 0,"+(-height)+" z";
+}
+
+function RectanglePathPositioned(x, y, width, height) {
+	return "M"+(-width/2+x)+","+(-height/2+y)+" l 0,"+(height)+" l "+width+",0 l 0,"+(-height)+" z";
 }
 
 function NodePath(width, height) {
