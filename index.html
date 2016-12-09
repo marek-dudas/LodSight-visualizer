@@ -9,16 +9,16 @@
 	    <script src="d3.v3.js"></script>
 	    <script src="sparql.js"></script>
 	    <script src="lodSparql.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jsonld/0.3.15/jsonld.js"></script>
+	    <script src="lodPathSerializer.js"></script>
 	     <script src="lodModel.js"></script>
 	    <script src="lodControl.js"></script>
 	  	<script src="lodView.js"></script>
 		 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
         <script src="lodLoader.js"></script>
         <script src="lodApp.js"></script>
-	  	
-		 
-		
-	  	
+	  	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+	  	<script src="lodPathGenerator.js"></script>
 	  	
 	<style>
 	html
@@ -504,6 +504,12 @@ table tr td
 					    <td>
 				        	<input type="button" value="Load examples for selected nodes" id="btnExamples" class="button">
 				        	
+				        	<select id="selSamplingMethod">
+				        		<option value="random">Random</option>
+				        		<option value="distinct">Distinct</option>
+				        		<option value="representative">Representative</option>
+				        	</select>
+				        	
 				        	<input type="button" value="Next example" id="btnChangeExample" class="button"></td>
 			        	<td>
 				        	<input type="button" value="Start/Stop Auto-Layout" id="btnLayout"  class="button"></td>
@@ -511,7 +517,10 @@ table tr td
 				        	<input type="button" value="Font Size +" id="btnFontPlus" class="button">
 				        
 				        	<input type="button" value = "Font Size -" id="btnFontMinus" class="button">
-				        	</td>				        
+				        	</td>	
+				        <td>
+				        	<input type="button" value="generate paths" id="btnGeneratePaths" class="button">
+				        	</td>			        
 			        </tr>
 	        	</table>
 	        </div>

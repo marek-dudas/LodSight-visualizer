@@ -132,6 +132,10 @@ LodView.prototype.initControls = function(controller) {
 		controller.updateView();
 	})
 	
+	d3.select("#btnGeneratePaths").on('click', function() {
+		LodPathGenerator.go(LodSight.control.model, LodPathSerializer);
+	})
+	
 };
 
 LodView.prototype.updateMaxFreqLabel = function(value) {

@@ -1,4 +1,5 @@
 var modelStoreUrl = "http://localhost/lodsight-graph-creator/getgraph.php"; //"http://lod2-dev.vse.cz/lodsight-v2/graph-creator/getgraph.php http://localhost/lodsight-graph-creator/getgraph.php"; //"http://192.168.1.2/lodsight/getgraph.php"; //"http://admin:c0d1988@protegeserver.cz/couchdb";
+var pathExampleGeneratorUrl = "http://localhost/rdf-path-examples/generate-examples";
 var debug = false;
 var labelHeight = 14;
 var sparqlProxyUrl = "http://localhost/lodsight-graph-creator/sparql-proxy.php"; //"http://lod2-dev.vse.cz/lodsight-v2/graph-creator/sparql-proxy.php http://localhost/lodsight-graph-creator/sparql-proxy.php"; //"http://192.168.1.2/lodsight/sparql-proxy.php";

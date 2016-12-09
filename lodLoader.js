@@ -8,6 +8,7 @@ LodLoader.loadLodModel  = function(lodControl, _url) {
 	var target = document.getElementById('canvas');
 	this.spinner = new Spinner().spin(target);
 
+	/*
 	require(["dojo/_base/xhr"],
 		    function(xhr) {
 //dojo.xhrGet({
@@ -17,7 +18,10 @@ LodLoader.loadLodModel  = function(lodControl, _url) {
     // Handle the result as JSON data
     handleAs: "json",
     // The success handler
-    load: function(jsonData) {
+    load: function(jsonData) {*/
+    	
+    $.get(url, "", function(data){
+    	var jsonData = JSON.parse(data);
     	var lodModel = new LodModel();
     	lodModel.dataset = jsonData.dataset;
     	lodModel.endpoint = jsonData.endpoint;
@@ -43,13 +47,7 @@ LodLoader.loadLodModel  = function(lodControl, _url) {
         lodModel.duplicateDataNodes();
         LodLoader.spinner.stop();
         lodControl.viewModel(lodModel);
-    },
-    // The error handler
-    error: function() {
-        alert('Error on loading the model.');
-    }
-		});
-});
+    });
 };
 
 LodLoader.isSummaryIdSet = function() {

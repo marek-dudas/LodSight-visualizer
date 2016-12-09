@@ -13,6 +13,29 @@ function LodSparqler(model)
 	}
 }
 
+LodSparqler.prototype.countExamples = function(path, success) {
+	var whereClause = "{";
+	for(var i=0; i<path.links.length; i++) {
+		var start = path.links[i].start;
+		var end = path.links[i].end;
+		whereClause += "?i"+start.id+" a "+start.getName()+" . ";
+		if(!end.isDatatype()) whereClause += "?i"+end.id+" a "+end.getName()+" . ";
+		whereClause += "?i"+start.id+" "+(path.links[i].getLabel(path.labelIndexes[i]))+" "+"?i"+end.id+" . ";
+	}
+	whereClause += "}"
+		
+	var selectQuery = "SELECT COUNT(*) AS ?pathCount WHERE "+whereClause;
+	var query = this.sparqler.createQuery();
+	query.query(selectQuery, {failure: function(){alert("Counting examples failed - query failure")}, 
+		success: function(json) {
+			if(json.results.bindings.length<1) {
+				alert("counting examples failed - no results");
+			}
+			else success(json.results.bindings[0]["pathCount"].value);
+		}});
+}
+
+
 LodSparqler.prototype.loadExamples = function(controller)
 {
 	for(var i=0; i<this.model.objectNodes.length; i++) this.model.objectNodes[i].examples = [];
@@ -49,5 +72,5 @@ LodSparqler.prototype.loadExamples = function(controller)
 			}
 		}
 		controller.updateView();
-	}})
+	}});
 }

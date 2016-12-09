@@ -23,6 +23,14 @@ function LodExampleInstance(label, uri) {
 	this.uri = uri;
 }
 
+LodNode.prototype.isDatatype = function() {
+	var isDatatype = false;
+	for(var i=0; i<datatypePrefixes.length; i++) {
+		if(datatypePrefixes[i]==this.prefix) isDatatype = true;
+	}
+	return isDatatype;
+}
+
 LodNode.prototype.addExample = function(label, uri) {
 	this.examples.push(new LodExampleInstance(label, uri));
 }
