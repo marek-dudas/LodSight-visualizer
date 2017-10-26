@@ -101,17 +101,19 @@ LodControl.prototype.examplesLoaded = function() {
 }
 
 LodControl.prototype.loadExamples = function() {
-	/*
+	
 	if(this.lodSparqler==null)
 	{
 		if(this.model != null) this.lodSparqler = new LodSparqler(this.model);
 	}
 	if(this.lodSparqler!=null){
 		this.lodSparqler.loadExamples(this);
-	}*/
+	}
+	/*
 	document.getElementById("btnExamples").value = "Loading, please wait...";
 	LodPathSerializer.setModel(this.model);
 	LodPathSerializer.loadExamples(this.examplesLoaded.bind(this), document.getElementById("selSamplingMethod").value);
+	*/
 }
 
 LodControl.prototype.changeExampleIndex = function() {

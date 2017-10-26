@@ -1,0 +1,189 @@
+{
+  "@context": {
+    "edgeProperty": {
+      "@type": "@id"
+    },
+    "edges": {
+      "@container": "@list"
+    },
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "@vocab": "https://w3id.org/lodsight/rdf-path#"
+  },
+  "@graph": [
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/489527-7403010089527"
+      },
+      "end": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/489527-7403010089527/agreed-price/1"
+      },
+      "edgeProperty": "http://purl.org/procurement/public-contracts#agreedPrice",
+      "@type": "Edge",
+      "@id": "_:b0"
+    },
+    {
+      "edges": [
+        {
+          "@id": "_:b0"
+        },
+        {
+          "@id": "_:b18"
+        }
+      ],
+      "@type": "Path",
+      "@id": "_:b1"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/362105-7303010062105"
+      },
+      "end": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/362105-7303010062105/agreed-price/1"
+      },
+      "edgeProperty": "http://purl.org/procurement/public-contracts#agreedPrice",
+      "@type": "Edge",
+      "@id": "_:b10"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/486338-7403010086338/agreed-price/1"
+      },
+      "end": {
+        "@value": "120027.46",
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+      },
+      "edgeProperty": "http://purl.org/goodrelations/v1#hasCurrencyValue",
+      "@type": "Edge",
+      "@id": "_:b12"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/486338-7403010086338"
+      },
+      "end": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/486338-7403010086338/agreed-price/1"
+      },
+      "edgeProperty": "http://purl.org/procurement/public-contracts#agreedPrice",
+      "@type": "Edge",
+      "@id": "_:b13"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/374523-7303010074523"
+      },
+      "end": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/374523-7303010074523/agreed-price/1"
+      },
+      "edgeProperty": "http://purl.org/procurement/public-contracts#agreedPrice",
+      "@type": "Edge",
+      "@id": "_:b16"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/489527-7403010089527/agreed-price/1"
+      },
+      "end": {
+        "@value": "7830032.41",
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+      },
+      "edgeProperty": "http://purl.org/goodrelations/v1#hasCurrencyValue",
+      "@type": "Edge",
+      "@id": "_:b18"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/362105-7303010062105/agreed-price/1"
+      },
+      "end": {
+        "@value": "1636249.59",
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+      },
+      "edgeProperty": "http://purl.org/goodrelations/v1#hasCurrencyValue",
+      "@type": "Edge",
+      "@id": "_:b19"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/239132-7203010039132/agreed-price/1"
+      },
+      "end": {
+        "@value": "381383.69",
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+      },
+      "edgeProperty": "http://purl.org/goodrelations/v1#hasCurrencyValue",
+      "@type": "Edge",
+      "@id": "_:b20"
+    },
+    {
+      "edges": [
+        {
+          "@id": "_:b5"
+        },
+        {
+          "@id": "_:b20"
+        }
+      ],
+      "@type": "Path",
+      "@id": "_:b21"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/374523-7303010074523/agreed-price/1"
+      },
+      "end": {
+        "@value": "7697100.76",
+        "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+      },
+      "edgeProperty": "http://purl.org/goodrelations/v1#hasCurrencyValue",
+      "@type": "Edge",
+      "@id": "_:b22"
+    },
+    {
+      "edges": [
+        {
+          "@id": "_:b16"
+        },
+        {
+          "@id": "_:b22"
+        }
+      ],
+      "@type": "Path",
+      "@id": "_:b23"
+    },
+    {
+      "edges": [
+        {
+          "@id": "_:b10"
+        },
+        {
+          "@id": "_:b19"
+        }
+      ],
+      "@type": "Path",
+      "@id": "_:b24"
+    },
+    {
+      "start": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/239132-7203010039132"
+      },
+      "end": {
+        "@id": "http://linked.opendata.cz/resource/vestnikverejnychzakazek.cz/public-contract/239132-7203010039132/agreed-price/1"
+      },
+      "edgeProperty": "http://purl.org/procurement/public-contracts#agreedPrice",
+      "@type": "Edge",
+      "@id": "_:b5"
+    },
+    {
+      "edges": [
+        {
+          "@id": "_:b13"
+        },
+        {
+          "@id": "_:b12"
+        }
+      ],
+      "@type": "Path",
+      "@id": "_:b6"
+    }
+  ]
+}
