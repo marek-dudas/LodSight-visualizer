@@ -5,11 +5,19 @@ function LodView(width, height, viewingElement){
     this.layoutRunning = true;
     
     this.textSize = minTextSize;
+
+    if(LodLoader.isConstrolsHidden){
+        d3.select("body").attr("class", "noControls");
+        this.width =  window.innerWidth;
+        this.height = window.innerHeight - 3;
+    }else{
+        d3.select("body").attr("class", "");
+	}
 	    
 	this.svg = d3.select("#"+viewingElement)
 		.append("svg")
-		.attr("width", width)
-		.attr("height", height)
+		.attr("width", this.width)
+		.attr("height", this.height)
 		.attr("xmlns", "http://www.w3.org/2000/svg") 
 		.attr("version", "1.1")
 		.attr("xmlns:xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -72,7 +80,7 @@ function LodView(width, height, viewingElement){
 LodView.prototype.initControls = function(controller) {
 
 	var view = this;
-	
+
 	this.rootSvg.on("contextmenu", function(){
 		controller.canvasMouseDown(d3.mouse(this), null);
 		d3.event.preventDefault();
@@ -135,6 +143,13 @@ LodView.prototype.initControls = function(controller) {
 	d3.select("#btnGeneratePaths").on('click', function() {
 		LodPathGenerator.go(LodSight.control.model, LodPathSerializer);
 	})
+
+    d3.select("#brand").on('click', function(){
+        var controls = 'true';
+        var currentUrl = window.location.href;
+        var newUrl = currentUrl.replace(/(controls=)[^\&]+/, '$1' + controls);
+        window.open(newUrl, '_blank');
+    });
 	
 };
 

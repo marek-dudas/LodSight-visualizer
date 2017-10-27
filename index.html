@@ -1,582 +1,707 @@
 <!DOCTYPE HTML>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>LODSight 0.1</title>	
-	
-		<script type="text/javascript" src="settings.js"></script>
-		<script type="text/javascript" src="spin.min.js"></script>
-	    <script src="d3.v3.js"></script>
-	    <script src="sparql.js"></script>
-	    <script src="lodSparql.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jsonld/0.3.15/jsonld.js"></script>
-	    <script src="lodPathSerializer.js"></script>
-	     <script src="lodModel.js"></script>
-	    <script src="lodControl.js"></script>
-	  	<script src="lodView.js"></script>
-		 <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
-        <script src="lodLoader.js"></script>
-        <script src="lodApp.js"></script>
-	  	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
-	  	<script src="lodPathGenerator.js"></script>
-	  	
-	<style>
-	html
-{ height: 100%;}
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>LODSight 0.1</title>
 
-*
-{ margin: 0;
-  padding: 0;}
+    <script type="text/javascript" src="settings.js"></script>
+    <script type="text/javascript" src="spin.min.js"></script>
+    <script src="d3.v3.js"></script>
+    <script src="sparql.js"></script>
+    <script src="lodSparql.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jsonld/0.3.15/jsonld.js"></script>
+    <script src="lodPathSerializer.js"></script>
+    <script src="lodModel.js"></script>
+    <script src="lodControl.js"></script>
+    <script src="lodView.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
+    <script src="lodLoader.js"></script>
+    <script src="lodApp.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="lodPathGenerator.js"></script>
 
-body
-{ font: normal .80em trebuchet ms, sans-serif;
-  background: #fff;
-  color: #5D5D5D;}
+    <style>
+        html {
+            height: 100%;
+        }
 
-p
-{ padding: 0 0 20px 0;
-  line-height: 1.7em;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
 
-img
-{ border: 0;}
+        body {
+            font: normal .80em trebuchet ms, sans-serif;
+            background: #fff;
+            color: #5D5D5D;
+        }
 
-h1, h2, h3, h4, h5, h6 
-{ font: normal 165% 'century gothic', arial, sans-serif;
-  color: #2DB8CD;
-  margin: 0 0 14px 0;
-  padding: 10px 0 5px 0;}
+        body.noControls #ruler,
+        body.noControls #logo,
+        body.noControls #site_content > * {
+            display: none;
+        }
 
-h2
-{ font: normal 165% 'century gothic', arial, sans-serif;
-  color: #B60000;}
+        body.noControls #brand,
+        body.noControls #site_content > #canvas {
+            display: block;
+        }
 
-h3
-{ font: normal 165% 'century gothic', arial, sans-serif;}
+        body.noControls #site_content,
+        body.noControls #site_content > * {
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+        }
 
-h4, h5, h6
-{ margin: 0;
-  padding: 0 0 5px 0;
-  font: normal 120% arial, sans-serif;
-  color: #B60000;}
+        #brand{
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            cursor: pointer;
+            display: none;
+        }
 
-h5, h6
-{ font: italic 95% arial, sans-serif;
-  color: #888;}
+        #brand:hover{
+            text-decoration: underline;
+        }
 
-h6
-{ color: #362C20;}
+        p {
+            padding: 0 0 20px 0;
+            line-height: 1.7em;
+        }
 
-a, a:hover
-{ outline: none;
-  text-decoration: underline;
-  color: #A4AA04;}
+        img {
+            border: 0;
+        }
 
-a:hover
-{ text-decoration: none;}
+        h1, h2, h3, h4, h5, h6 {
+            font: normal 165% 'century gothic', arial, sans-serif;
+            color: #2DB8CD;
+            margin: 0 0 14px 0;
+            padding: 10px 0 5px 0;
+        }
 
-.left
-{ float: left;
-  width: auto;
-  margin-right: 10px;}
+        h2 {
+            font: normal 165% 'century gothic', arial, sans-serif;
+            color: #B60000;
+        }
 
-.right
-{ float: right; 
-  width: auto;
-  margin-left: 10px;}
+        h3 {
+            font: normal 165% 'century gothic', arial, sans-serif;
+        }
 
-.center
-{ display: block;
-  text-align: center;
-  margin: 20px auto;}
+        h4, h5, h6 {
+            margin: 0;
+            padding: 0 0 5px 0;
+            font: normal 120% arial, sans-serif;
+            color: #B60000;
+        }
 
-blockquote
-{ margin: 20px 0; 
-  padding: 10px 20px 0 20px;
-  border: 1px solid #E5E5DB;
-  background: #FFF;}
+        h5, h6 {
+            font: italic 95% arial, sans-serif;
+            color: #888;
+        }
 
-ul
-{ margin: 2px 0 22px 17px;}
+        h6 {
+            color: #362C20;
+        }
 
-ul li
-{ list-style-type: circle;
-  margin: 0 0 6px 0; 
-  padding: 0 0 4px 5px;}
+        a, a:hover {
+            outline: none;
+            text-decoration: underline;
+            color: #A4AA04;
+        }
 
-ol
-{ margin: 8px 0 22px 20px;}
+        a:hover {
+            text-decoration: none;
+        }
 
-ol li
-{ margin: 0 0 11px 0;}
+        .left {
+            float: left;
+            width: auto;
+            margin-right: 10px;
+        }
 
-#main, #logo, #menubar, #site_content, #footer
-{ margin-left: auto; 
-  margin-right: auto;}
+        .right {
+            float: right;
+            width: auto;
+            margin-left: 10px;
+        }
 
-#main
-{ padding-bottom: 20px;}
+        .center {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+        }
 
-#header
-{ background: transparent;
-  height: 170px;}
+        blockquote {
+            margin: 20px 0;
+            padding: 10px 20px 0 20px;
+            border: 1px solid #E5E5DB;
+            background: #FFF;
+        }
 
-#logo
-{ width: 860px;
-  position: relative;
-  height: 134px;}
+        ul {
+            margin: 2px 0 22px 17px;
+        }
 
-#logo h1, #logo h2
-{ font: normal 300% "century gothic", arial, sans-serif;}
+        ul li {
+            list-style-type: circle;
+            margin: 0 0 6px 0;
+            padding: 0 0 4px 5px;
+        }
 
-#logo h1
-{ padding: 24px 0 0 0;
-  margin: 0;
-  color: #B60000;}
+        ol {
+            margin: 8px 0 22px 20px;
+        }
 
-#logo h2
-{ font-size: 120%;
-  padding: 4px 0 0 0;
-  color: #A8AA94;}
+        ol li {
+            margin: 0 0 11px 0;
+        }
 
-#logo h1, #logo h1 a, #logo h1 a:hover 
-{ padding: 22px 0 0 0;
-  color: #B60000;
-  text-decoration: none;}
+        #main, #logo, #menubar, #site_content, #footer {
+            margin-left: auto;
+            margin-right: auto;
+        }
 
-#logo h1 a .logo_colour
-{ color: #888;}
+        #main {
+            padding-bottom: 20px;
+        }
 
-#logo a:hover .logo_colour
-{ color: #FFF;}
+        #header {
+            background: transparent;
+            height: 170px;
+        }
 
-#menubar
-{ height: 24px;
-  width: 900px;} 
+        #logo {
+            width: 860px;
+            position: relative;
+            height: 134px;
+        }
 
-ul#menu
-{ float: right;
-  margin: 0;
-  padding: 0;}
+        #logo h1, #logo h2 {
+            font: normal 300% "century gothic", arial, sans-serif;
+        }
 
-ul#menu li
-{ float: left;
-  padding: 0;
-  list-style: none;
-  margin: 5px 2px 0 0;}
+        #logo h1 {
+            padding: 24px 0 0 0;
+            margin: 0;
+            color: #B60000;
+        }
 
-ul#menu li a
-{ font: normal 100% 'trebuchet ms', sans-serif;
-  display: block; 
-  float: left; 
-  height: 20px;
-  padding: 6px 20px 5px 20px;
-  text-align: center;
-  color: #000;
-  text-decoration: none;
-  background: #E0E0E0;} 
+        #logo h2 {
+            font-size: 120%;
+            padding: 4px 0 0 0;
+            color: #A8AA94;
+        }
 
-ul#menu li.selected a, ul#menu li.selected a:hover
-{ background: #FFF;
-  color: #B60000;}
+        #logo h1, #logo h1 a, #logo h1 a:hover, #brand {
+            padding: 22px 0 0 0;
+            color: #B60000;
+            text-decoration: none;
+        }
 
-ul#menu li a:hover
-{ color: #B60000;}
+        #logo h1 a .logo_colour {
+            color: #888;
+        }
 
-#site_content
-{ width: 858px;
-  overflow: hidden;
-  margin: 0 auto 0 auto;
-  padding: 10px 10px 10px 10px;
-  border: 2px solid #ccc;} 
+        #logo a:hover .logo_colour {
+            color: #FFF;
+        }
 
-.sidebar
-{ float: right;
-  width: 190px;
-  padding: 0 15px 20px 15px;}
+        #menubar {
+            height: 24px;
+            width: 900px;
+        }
 
-.sidebar ul
-{ width: 178px; 
-  padding: 4px 0 0 0; 
-  margin: 4px 0 30px 0;}
+        ul#menu {
+            float: right;
+            margin: 0;
+            padding: 0;
+        }
 
-.sidebar li
-{ list-style: none; 
-  padding: 0 0 7px 0; }
+        ul#menu li {
+            float: left;
+            padding: 0;
+            list-style: none;
+            margin: 5px 2px 0 0;
+        }
 
-.sidebar li a, .sidebar li a:hover
-{ padding: 0 0 0 25px;
-  display: block;
-  background: transparent url(link.png) no-repeat left center;} 
+        ul#menu li a {
+            font: normal 100% 'trebuchet ms', sans-serif;
+            display: block;
+            float: left;
+            height: 20px;
+            padding: 6px 20px 5px 20px;
+            text-align: center;
+            color: #000;
+            text-decoration: none;
+            background: #E0E0E0;
+        }
 
-.sidebar li a.selected
-{ color: #444;
-  text-decoration: none;} 
+        ul#menu li.selected a, ul#menu li.selected a:hover {
+            background: #FFF;
+            color: #B60000;
+        }
 
-#content
-{ text-align: left;
-  width: 613px;
-  padding: 0;}
+        ul#menu li a:hover {
+            color: #B60000;
+        }
 
-#footer
-{ width: 916px;
-  font-family: sans-serif;
-  font-size: 90%;
-  height: 28px;
-  padding: 20px 0 5px 0;
-  text-align: center; 
-  background: transparent;
-  color: #111;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;}
+        #site_content {
+            width: 858px;
+            overflow: hidden;
+            margin: 0 auto 0 auto;
+            padding: 10px 10px 10px 10px;
+            border: 2px solid #ccc;
+        }
 
-#footer a, #footer a:hover
-{ color: #111;
-  text-decoration: underline;}
+        .sidebar {
+            float: right;
+            width: 190px;
+            padding: 0 15px 20px 15px;
+        }
 
-#footer a:hover
-{ text-decoration: none;}
+        .sidebar ul {
+            width: 178px;
+            padding: 4px 0 0 0;
+            margin: 4px 0 30px 0;
+        }
 
-#footer p
-{ line-height: 22px;
-  padding: 0;}
-  
-.search
-{ color: #555; 
-  border: 1px solid #DDD; 
-  width: 134px;
-  padding: 5px;}
-  
-.form_settings
-{ margin: 15px 0 0 0;}
+        .sidebar li {
+            list-style: none;
+            padding: 0 0 7px 0;
+        }
 
-.form_settings p
-{ padding: 0 0 4px 0;}
+        .sidebar li a, .sidebar li a:hover {
+            padding: 0 0 0 25px;
+            display: block;
+            background: transparent url(link.png) no-repeat left center;
+        }
 
-.form_settings span
-{ float: left; 
-  width: 200px; 
-  text-align: left;}
-  
-.form_settings input, .form_settings textarea
-{ padding: 5px; 
-  width: 299px; 
-  font: 100% arial; 
-  border: 1px solid #E5E5DB; 
-  background: #FFF; 
-  color: #47433F;}
-  
-.form_settings .submit
-{ font: 100% arial; 
-  border: 0; 
-  width: 99px; 
-  margin: 0 0 0 212px; 
-  height: 33px;
-  padding: 2px 0 3px 0;
-  cursor: pointer; 
-  background: #3B3B3B; 
-  color: #FFF;}
+        .sidebar li a.selected {
+            color: #444;
+            text-decoration: none;
+        }
 
-.form_settings textarea, .form_settings select
-{ font: 100% arial; 
-  width: 299px;}
+        #content {
+            text-align: left;
+            width: 613px;
+            padding: 0;
+        }
 
-.form_settings select
-{ width: 310px;}
+        #footer {
+            width: 916px;
+            font-family: sans-serif;
+            font-size: 90%;
+            height: 28px;
+            padding: 20px 0 5px 0;
+            text-align: center;
+            background: transparent;
+            color: #111;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
 
-.form_settings .checkbox
-{ margin: 4px 0; 
-  padding: 0; 
-  width: 14px;
-  border: 0;
-  background: none;}
+        #footer a, #footer a:hover {
+            color: #111;
+            text-decoration: underline;
+        }
 
-.separator
-{ width: 100%;
-  height: 0;
-  border-top: 1px solid #D9D5CF;
-  border-bottom: 1px solid #FFF;
-  margin: 0 0 20px 0;}
-  
-table
-{ margin: 10px 0 30px 0;
-  /*font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;*/
-  font: normal 0.9em trebuchet ms, sans-serif;
-}
+        #footer a:hover {
+            text-decoration: none;
+        }
 
-table tr th, table tr td
-{ background: #3B3B3B;
-  color: #FFF;
-  padding: 7px 4px;
-  text-align: left;}
-  
-table tr td
-{ background: #E5E5DB;
-  color: #47433F;
-  border-top: 1px solid #FFF;}
+        #footer p {
+            line-height: 22px;
+            padding: 0;
+        }
 
-	/* visualizer styles */		
-		text {
-		  font: 12px Helvetica Neue, Helvetica, Arial, sans-serif;
-		  text-anchor: middle;
-		  pointer-events: none;
-		  alignment-baseline: middle;
-		}
-		
-		circle {
-		  fill: #ccc;
-		}
-		
-		.node:hover circle {
-		  fill: #FFA500;
-		}
-				
-		.node path {
-			/*fill: #FFEECA;*/
-			opacity: 0.4;
-			cursor: pointer;
-			stroke: #ccc;
-			stroke-width: 1px;
-		}		
-		
-		path.selected {			
-			fill: #FF0000 !important;
-			opacity: 0.5 !important;
-		}
-		
-		text.linklabelpart.selected {
-			fill: #ff0000 !important;
-		}
-		
-		.linklabel:hover text {
-			fill: #777777
-		}
-		
-		.selected path {
-			/*fill: #FFC125 !important;*/
-			fill: #FF4444 !important;
-			opacity: 0.4 !important;
-		}
-		
-		.node path:hover {
-			fill: #FFA500;
-		}
-		
-		.linklabelholder path {
-			opacity: 0.0;
-		}
-		
-		.linklabelholder text {
-			font-size: 14;
-			/*fill: #777777*/
-		}
-		
-		.exampleLabelHolder {
-			text-anchor: middle;
-		}
-		
-		path.exampleLabelClickArea.selected {
-			opacity: 0.0 !important;
-		}
-		
-		.exampleLabelClickArea {
-			opacity: 0.0 !important;
-		}
-		
-		.typelabel text {
-			fill: #cccccc;
-		}
-		
-		.button {
-		   border-top: 1px solid #d6d6d6;
-		   background: #d6d6d6;
-		   /*
-		   background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
-		   background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
-		   background: -moz-linear-gradient(top, #3e779d, #65a9d7);
-		   background: -ms-linear-gradient(top, #3e779d, #65a9d7);
-		   background: -o-linear-gradient(top, #3e779d, #65a9d7);*/
-		   padding: 3px 5px;
-		   -webkit-border-radius: 13px;
-		   -moz-border-radius: 13px;
-		   border-radius: 13px;
-		   text-shadow: rgba(0,0,0,.4) 0 1px 0;
-		   color: black;
-		   font-size: 12px;
-		   font-family: Helvetica, Arial, Sans-Serif;
-		   text-decoration: none;
-		   vertical-align: middle;
-		   }
-		.button:hover {
-		   border-top-color: #28597a;
-		   background: #28597a;
-		   color: #ccc;
-		   }
-		.button:active {
-		   border-top-color: #d6d6d6;
-		   background: #d6d6d6;
-		   }
-		   
-		.roundbox {
-			-webkit-border-radius: 15px;
-			border-radius: 15px;
-			border: 6px #d6d6d6 solid;
-			
-			-moz-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-			-webkit-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-			box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-		}
-		
-		.roundboxNoShadow {
-			-webkit-border-radius: 15px;
-			border-radius: 15px;
-			border: 6px #d6d6d6 solid;
-			background-color: white;
-			
-		}
-		
-		.toolheading {
-			font: 14px Helvetica Neue, Helvetica, Arial, sans-serif;
-			color: grey;
-			font-weight: bold;
-		}
-		
-		#ruler { visibility: hidden; white-space: nowrap; 
-			font: 16px Helvetica Neue, Helvetica, Arial, sans-serif;}
-	</style>
+        .search {
+            color: #555;
+            border: 1px solid #DDD;
+            width: 134px;
+            padding: 5px;
+        }
 
-    </head>
-    <body>
-    		<span id="ruler"></span>
-    		<div id="logo">
-    		<div style="float:left">
-	    		<h1>LodSight</h1>	        	
-	        	<h2 style="display:inline">An RDF dataset summarization tool [v0.1]</h2>
-	        	<a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>&nbsp&nbsp<a href="/lodsight-v2">Checkout the new version!</a>
-        	</div>
-        	<img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
-        	</div>
-    	
-        <div style="width:1290px; margin-bottom:20px" id="site_content">
-        
-        	
-        	<h4>Available dataset summarizations: </h4>
-	        <iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight-graph-creator" width="100%" height="200px"> 
-	        <!-- src="http://lod2-dev.vse.cz/lodsight/graph-creator http://localhost/lodsight-graph-creator" -->
-	        </iframe> 
-	        <div style="text-align: center;">
-	        	Displayed dataset: <h3 style="font-weight: bold; display:inline" id="spanDatasetName"></h3> 	        	
-	        </div>      
-	        <div style="float:left; width:370px;">
-	        	<div>
-	        	<div style="text-align: justify">
-	        		<h3 style="display: inline-block;">Filtering Tools</h3>&nbsp&nbsp&nbsp<input type="button" value="Update Filters" id="btnUpdate" class = "button">
-	        	</div>
-		        <h4>Predicates in the graph:</h4>
-			        	<div style="border:2px solid #ccc;height:200px;overflow-y: scroll;" id="divPredicateList">
-			        	</div>
-			        	<br>
-			    </div>
-			    <div style="margin-bottom: 5px;">
-			        	Detail: <span id="spnLOD">100</span>%
-				        	<input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq">
-					         <br>
-					        Path frequency threshold: <span id="spnMaxFreq">100</span>%
-				        	<input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq">
-				</div>
-			    <div id="divPrefixList">
-		        	<h4>Namespace prefixes:</h4>
-		        </div>
-			    <input type="button" value="Update Filters" id="btnUpdatePredicates"  class="button">
-			    
-			    
-	        		
-	        </div>
-	        
-	        <div style = "float:right; width:900px; height:600px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
-	        </div>	 
-	        <div style = "float:right;">
-	        	<table>
-	        		<tr>
-	        			<td>
-		        			
-					    <td>
-					        <input type="checkbox" id="boxViewSets" checked="checked"> Show datatypes </td>
-					    <td>
-				        	<input type="button" value="Load examples for selected nodes" id="btnExamples" class="button">
-				        	
-				        	<select id="selSamplingMethod">
-				        		<option value="random">Random</option>
-				        		<option value="distinct">Distinct</option>
-				        		<option value="representative">Representative</option>
-				        	</select>
-				        	
-				        	<input type="button" value="Next example" id="btnChangeExample" class="button"></td>
-			        	<td>
-				        	<input type="button" value="Start/Stop Auto-Layout" id="btnLayout"  class="button"></td>
-				        <td>
-				        	<input type="button" value="Font Size +" id="btnFontPlus" class="button">
-				        
-				        	<input type="button" value = "Font Size -" id="btnFontMinus" class="button">
-				        	</td>	
-				        <td>
-				        	<input type="button" value="generate paths" id="btnGeneratePaths" class="button">
-				        	</td>			        
-			        </tr>
-	        	</table>
-	        </div>
-	        
-	        <div style="float:right; width:900px">
-	        	<table >
-	        	<tr><td style="vertical-align: top">
-	        	<h4 id="help">What is This?</h4>
-	        		<ul>
-	        			<li>This app shows summarizations of linked datasets: graphs created from classes and predicates 
-	        				that connect instances of these classes in the dataset.</li>
-	        			<li>Summarizations are created offline and only some are available at the moment.
-	        				<a href="about.html">Learn more and contact us to get your dataset visualized here.</a></li>
-	        			<li>Nodes from different namespaces have different color. 
-	        				The namespace prefixes are defined at the bottom-left part of the page.</li>
-	        		</ul>
-	        	</td>
-	        	<td style="vertical-align: top">
-	        	<h4>How to Use</h4>
-	        	<ul>
-	        		<li>Click on one of the dataset links at the top of the page to see its visualization.</li>
-	        		<li>Tick several datasets and click <b>"Load all selected datasets"</b> to see visualizations of several datasets merged into one graph.</li>
-	        		<li><b>Zoom</b> in or out with the mousewheel or equivalent scrolling controls.</li>
-	        		<li><b>Move around the visualization</b> by clicking outside nodes and holding&moving the mouse ("drag&drop").</li>
-	        		<li><b>Move the nodes</b> by similar "drag&drop" means.</li>
-	        		<li>Prevent (or encourage) nodes from "jumping around" by clicking on <b>"start/stop auto layout."</b></li>
-	        		<li><b>"Show datatypes"</b> checkbox controls whether datatype properties are displayed.</li>
-	        		<li><b>Select</b> class nodes and predicates by left-clicking on them. Right-click cancels the selection.</li>
-	        		<li>Clicking <b>"Load examples for selected nodes"</b> shows examples of instances of 
-	        			selected classes connected by selected predicates (above the class nodes).
-	        			</li>
-	        		<li><b>"Next Example"</b> button loads another example combination of instances for selected class&predicate combination.</li>
-	        		<li><b>"Font Size"</b> buttons increase or decrease font size of class node labels.</li>
-	        		<li>Tip: you can achieve a sort of <b>fullscreen</b> view by zooming-in at the browser level 
-	        			(e.g. click outside the visualization window, then hold CTRL and scroll-up with mousewheel), thus enlarging the visualization window,
-	        			and then zooming-out at the visualization level (click inside the visualization window and scroll-down with mousewheel).</li>
-	        	</ul>
-	        	</td>
-	        	<td style="vertical-align: top">
-	        	<h4>Using the Filters</h4>
-			    <ul>
-			    <li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count threshold. 
-	        			The higher the threshold, the more instantiations the combination of classes and predicates 
-	        			must have to be displayed.
-	        			After setting the slider, click "Update Filters" and wait a few seconds for reload.
-	        			</li>
-	        		<li><b>Path frequency threshold</b> works analogously as <b>Detail</b>, but changes the maximum number of instantiations.</li>
-	        		<li><b>Predicates</b> list shows all predicates in the dataset. Tick some of them and click "Update Filters" to limit the visualized graph to paths containing the selected predicates.</li>
-	        		<li><b>Namespaces</b> list shows all ontologies used in the dataset. Tick some of them and click "Update Filters" to limit the visualization to entities from selected ontologies.</li>
-	        	</ul>
-	        	</td>
-	        	</tr>
-	        	</table>
+        .form_settings {
+            margin: 15px 0 0 0;
+        }
+
+        .form_settings p {
+            padding: 0 0 4px 0;
+        }
+
+        .form_settings span {
+            float: left;
+            width: 200px;
+            text-align: left;
+        }
+
+        .form_settings input, .form_settings textarea {
+            padding: 5px;
+            width: 299px;
+            font: 100% arial;
+            border: 1px solid #E5E5DB;
+            background: #FFF;
+            color: #47433F;
+        }
+
+        .form_settings .submit {
+            font: 100% arial;
+            border: 0;
+            width: 99px;
+            margin: 0 0 0 212px;
+            height: 33px;
+            padding: 2px 0 3px 0;
+            cursor: pointer;
+            background: #3B3B3B;
+            color: #FFF;
+        }
+
+        .form_settings textarea, .form_settings select {
+            font: 100% arial;
+            width: 299px;
+        }
+
+        .form_settings select {
+            width: 310px;
+        }
+
+        .form_settings .checkbox {
+            margin: 4px 0;
+            padding: 0;
+            width: 14px;
+            border: 0;
+            background: none;
+        }
+
+        .separator {
+            width: 100%;
+            height: 0;
+            border-top: 1px solid #D9D5CF;
+            border-bottom: 1px solid #FFF;
+            margin: 0 0 20px 0;
+        }
+
+        table {
+            margin: 10px 0 30px 0;
+            /*font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;*/
+            font: normal 0.9em trebuchet ms, sans-serif;
+        }
+
+        table tr th, table tr td {
+            background: #3B3B3B;
+            color: #FFF;
+            padding: 7px 4px;
+            text-align: left;
+        }
+
+        table tr td {
+            background: #E5E5DB;
+            color: #47433F;
+            border-top: 1px solid #FFF;
+        }
+
+        /* visualizer styles */
+        text {
+            font: 12px Helvetica Neue, Helvetica, Arial, sans-serif;
+            text-anchor: middle;
+            pointer-events: none;
+            alignment-baseline: middle;
+        }
+
+        circle {
+            fill: #ccc;
+        }
+
+        .node:hover circle {
+            fill: #FFA500;
+        }
+
+        .node path {
+            /*fill: #FFEECA;*/
+            opacity: 0.4;
+            cursor: pointer;
+            stroke: #ccc;
+            stroke-width: 1px;
+        }
+
+        path.selected {
+            fill: #FF0000 !important;
+            opacity: 0.5 !important;
+        }
+
+        text.linklabelpart.selected {
+            fill: #ff0000 !important;
+        }
+
+        .linklabel:hover text {
+            fill: #777777
+        }
+
+        .selected path {
+            /*fill: #FFC125 !important;*/
+            fill: #FF4444 !important;
+            opacity: 0.4 !important;
+        }
+
+        .node path:hover {
+            fill: #FFA500;
+        }
+
+        .linklabelholder path {
+            opacity: 0.0;
+        }
+
+        .linklabelholder text {
+            font-size: 14;
+            /*fill: #777777*/
+        }
+
+        .exampleLabelHolder {
+            text-anchor: middle;
+        }
+
+        path.exampleLabelClickArea.selected {
+            opacity: 0.0 !important;
+        }
+
+        .exampleLabelClickArea {
+            opacity: 0.0 !important;
+        }
+
+        .typelabel text {
+            fill: #cccccc;
+        }
+
+        .button {
+            border-top: 1px solid #d6d6d6;
+            background: #d6d6d6;
+            /*
+            background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
+            background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
+            background: -moz-linear-gradient(top, #3e779d, #65a9d7);
+            background: -ms-linear-gradient(top, #3e779d, #65a9d7);
+            background: -o-linear-gradient(top, #3e779d, #65a9d7);*/
+            padding: 3px 5px;
+            -webkit-border-radius: 13px;
+            -moz-border-radius: 13px;
+            border-radius: 13px;
+            text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
+            color: black;
+            font-size: 12px;
+            font-family: Helvetica, Arial, Sans-Serif;
+            text-decoration: none;
+            vertical-align: middle;
+        }
+
+        .button:hover {
+            border-top-color: #28597a;
+            background: #28597a;
+            color: #ccc;
+        }
+
+        .button:active {
+            border-top-color: #d6d6d6;
+            background: #d6d6d6;
+        }
+
+        .roundbox {
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            border: 6px #d6d6d6 solid;
+
+            -moz-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
+            -webkit-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
+            box-shadow: inset 0px 0px 13px 3px #d6d6d6;
+        }
+
+        .roundboxNoShadow {
+            -webkit-border-radius: 15px;
+            border-radius: 15px;
+            border: 6px #d6d6d6 solid;
+            background-color: white;
+
+        }
+
+        .toolheading {
+            font: 14px Helvetica Neue, Helvetica, Arial, sans-serif;
+            color: grey;
+            font-weight: bold;
+        }
+
+        #ruler {
+            visibility: hidden;
+            white-space: nowrap;
+            font: 16px Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+    </style>
+
+</head>
+<body>
+<span id="ruler"></span>
+<div id="logo">
+    <div style="float:left">
+        <h1>LodSight</h1>
+        <h2 style="display:inline">An RDF dataset summarization tool [v0.1]</h2>
+        <a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>&nbsp&nbsp<a href="/lodsight-v2">Checkout
+        the new version!</a>
+    </div>
+    <img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
+</div>
+
+<div style="width:1290px; margin-bottom:20px" id="site_content">
+
+
+    <h4>Available dataset summarizations: </h4>
+    <iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight-graph-creator" width="100%" height="200px">
+    <!--<iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight/lodsight-graph-creator" width="100%" height="200px"> -->
+        <!-- src="http://lod2-dev.vse.cz/lodsight/graph-creator http://localhost/lodsight-graph-creator" -->
+    </iframe>
+    <div style="text-align: center;">
+        Displayed dataset: <h3 style="font-weight: bold; display:inline" id="spanDatasetName"></h3>
+    </div>
+    <div style="float:left; width:370px;">
+        <div>
+            <div style="text-align: justify">
+                <h3 style="display: inline-block;">Filtering Tools</h3>&nbsp&nbsp&nbsp<input type="button"
+                                                                                             value="Update Filters"
+                                                                                             id="btnUpdate"
+                                                                                             class="button">
+            </div>
+            <h4>Predicates in the graph:</h4>
+            <div style="border:2px solid #ccc;height:200px;overflow-y: scroll;" id="divPredicateList">
+            </div>
+            <br>
         </div>
-    </body>   
-    <script type="text/javascript">
-    	var LodSight = new LodApp("canvas", 900, 600);
-    </script>
+        <div style="margin-bottom: 5px;">
+            Detail: <span id="spnLOD">100</span>%
+            <input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq">
+            <br>
+            Path frequency threshold: <span id="spnMaxFreq">100</span>%
+            <input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq">
+        </div>
+        <div id="divPrefixList">
+            <h4>Namespace prefixes:</h4>
+        </div>
+        <input type="button" value="Update Filters" id="btnUpdatePredicates" class="button">
+
+
+    </div>
+
+    <div style="float:right; width:900px; height:600px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
+        <span id="brand" title="Click to see this chart on the official LodSight website">LodSight</span>
+    </div>
+    <div style="float:right;">
+        <table>
+            <tr>
+                <td>
+
+                <td>
+                    <input type="checkbox" id="boxViewSets" checked="checked"> Show datatypes
+                </td>
+                <td>
+                    <input type="button" value="Load examples for selected nodes" id="btnExamples" class="button">
+
+                    <select id="selSamplingMethod">
+                        <option value="random">Random</option>
+                        <option value="distinct">Distinct</option>
+                        <option value="representative">Representative</option>
+                    </select>
+
+                    <input type="button" value="Next example" id="btnChangeExample" class="button"></td>
+                <td>
+                    <input type="button" value="Start/Stop Auto-Layout" id="btnLayout" class="button"></td>
+                <td>
+                    <input type="button" value="Font Size +" id="btnFontPlus" class="button">
+
+                    <input type="button" value="Font Size -" id="btnFontMinus" class="button">
+                </td>
+                <td>
+                    <input type="button" value="generate paths" id="btnGeneratePaths" class="button">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="float:right; width:900px">
+        <table>
+            <tr>
+                <td style="vertical-align: top">
+                    <h4 id="help">What is This?</h4>
+                    <ul>
+                        <li>This app shows summarizations of linked datasets: graphs created from classes and predicates
+                            that connect instances of these classes in the dataset.
+                        </li>
+                        <li>Summarizations are created offline and only some are available at the moment.
+                            <a href="about.html">Learn more and contact us to get your dataset visualized here.</a></li>
+                        <li>Nodes from different namespaces have different color.
+                            The namespace prefixes are defined at the bottom-left part of the page.
+                        </li>
+                    </ul>
+                </td>
+                <td style="vertical-align: top">
+                    <h4>How to Use</h4>
+                    <ul>
+                        <li>Click on one of the dataset links at the top of the page to see its visualization.</li>
+                        <li>Tick several datasets and click <b>"Load all selected datasets"</b> to see visualizations of
+                            several datasets merged into one graph.
+                        </li>
+                        <li><b>Zoom</b> in or out with the mousewheel or equivalent scrolling controls.</li>
+                        <li><b>Move around the visualization</b> by clicking outside nodes and holding&moving the mouse
+                            ("drag&drop").
+                        </li>
+                        <li><b>Move the nodes</b> by similar "drag&drop" means.</li>
+                        <li>Prevent (or encourage) nodes from "jumping around" by clicking on <b>"start/stop auto
+                            layout."</b></li>
+                        <li><b>"Show datatypes"</b> checkbox controls whether datatype properties are displayed.</li>
+                        <li><b>Select</b> class nodes and predicates by left-clicking on them. Right-click cancels the
+                            selection.
+                        </li>
+                        <li>Clicking <b>"Load examples for selected nodes"</b> shows examples of instances of
+                            selected classes connected by selected predicates (above the class nodes).
+                        </li>
+                        <li><b>"Next Example"</b> button loads another example combination of instances for selected
+                            class&predicate combination.
+                        </li>
+                        <li><b>"Font Size"</b> buttons increase or decrease font size of class node labels.</li>
+                        <li>Tip: you can achieve a sort of <b>fullscreen</b> view by zooming-in at the browser level
+                            (e.g. click outside the visualization window, then hold CTRL and scroll-up with mousewheel),
+                            thus enlarging the visualization window,
+                            and then zooming-out at the visualization level (click inside the visualization window and
+                            scroll-down with mousewheel).
+                        </li>
+                    </ul>
+                </td>
+                <td style="vertical-align: top">
+                    <h4>Using the Filters</h4>
+                    <ul>
+                        <li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count
+                            threshold.
+                            The higher the threshold, the more instantiations the combination of classes and predicates
+                            must have to be displayed.
+                            After setting the slider, click "Update Filters" and wait a few seconds for reload.
+                        </li>
+                        <li><b>Path frequency threshold</b> works analogously as <b>Detail</b>, but changes the maximum
+                            number of instantiations.
+                        </li>
+                        <li><b>Predicates</b> list shows all predicates in the dataset. Tick some of them and click
+                            "Update Filters" to limit the visualized graph to paths containing the selected predicates.
+                        </li>
+                        <li><b>Namespaces</b> list shows all ontologies used in the dataset. Tick some of them and click
+                            "Update Filters" to limit the visualization to entities from selected ontologies.
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+<script type="text/javascript">
+    var LodSight = new LodApp("canvas", 900, 600);
+</script>
 </html>
