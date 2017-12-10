@@ -17,8 +17,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
     <script src="lodLoader.js"></script>
     <script src="lodApp.js"></script>
-    <script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="lodPathGenerator.js"></script>
+
+    <link rel="stylesheet" href="./styles/graph.css">
+    <link rel="stylesheet" href="./styles/styles.min.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
 
     <style>
 
@@ -55,76 +59,7 @@
         }
 
         /* visualizer styles */
-        text {
-            font: 12px Helvetica Neue, Helvetica, Arial, sans-serif;
-            text-anchor: middle;
-            pointer-events: none;
-            alignment-baseline: middle;
-        }
 
-        circle {
-            fill: #ccc;
-        }
-
-        .node:hover circle {
-            fill: #FFA500;
-        }
-
-        .node path {
-            /*fill: #FFEECA;*/
-            opacity: 0.4;
-            cursor: pointer;
-            stroke: #ccc;
-            stroke-width: 1px;
-        }
-
-        path.selected {
-            fill: #FF0000 !important;
-            opacity: 0.5 !important;
-        }
-
-        text.linklabelpart.selected {
-            fill: #ff0000 !important;
-        }
-
-        .linklabel:hover text {
-            fill: #777777
-        }
-
-        .selected path {
-            /*fill: #FFC125 !important;*/
-            fill: #FF4444 !important;
-            opacity: 0.4 !important;
-        }
-
-        .node path:hover {
-            fill: #FFA500;
-        }
-
-        .linklabelholder path {
-            opacity: 0.0;
-        }
-
-        .linklabelholder text {
-            font-size: 14;
-            /*fill: #777777*/
-        }
-
-        .exampleLabelHolder {
-            text-anchor: middle;
-        }
-
-        path.exampleLabelClickArea.selected {
-            opacity: 0.0 !important;
-        }
-
-        .exampleLabelClickArea {
-            opacity: 0.0 !important;
-        }
-
-        .typelabel text {
-            fill: #cccccc;
-        }
     </style>
 
 </head>
