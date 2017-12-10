@@ -4,6 +4,25 @@ html, body{
   padding: 0;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+button {
+  -webkit-appearance: none !important;
+  &:focus {
+    outline: none !important;
+  }
+  &:active {
+    box-shadow: none !important;
+  }
+}
+
+div > :not(p):not(span):not(i), *:hover {
+  @include transition(all .2s);
+}
+
+a, a:hover {
+  text-decoration: none;
 }
 
 ::selection {
@@ -51,7 +70,7 @@ body::-webkit-scrollbar-track {
 }
 
 body {
-  font-family: "Segoe UI Semilight", "open sans", Calibri, sans-serif;
+  font-family: "Segoe UI Light", "open sans", Calibri, sans-serif;
   min-width: 320px;
   @media #{$xxs}{
     overflow-x: scroll;
@@ -89,7 +108,21 @@ body {
   height: 100%;
   padding-top: 50px;
 }
+
 #canvas{
   width: 100%;
   height: 100%;
+}
+
+.button{
+  background-color: $themeColor;
+  color: $textLight;
+  @include border-radius(0);
+  padding-left: 40px;
+  padding-right: 40px;
+  border: none;
+  &:hover{
+    background-color: $themeColorHover;
+    color: $textLight;
+  }
 }

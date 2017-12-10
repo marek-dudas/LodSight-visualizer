@@ -1,29 +1,28 @@
 /*____COLORS____*/
 /*____MEDIA QUERY BREAKPOINTS____*/
-.navbar {
-  -webkit-border-radius: 0;
-  border-radius: 0;
-  background-clip: padding-box;
-  border: none;
-  color: #FFF;
-  background-color: #005E81;
-  font-family: "Segoe UI Light"; }
-  .navbar .icon-bar {
-    background-color: #FFF; }
-  .navbar li {
-    text-align: center; }
-    .navbar li a {
-      color: #FFF;
-      font-size: 1.3em; }
-      .navbar li a:hover {
-        background: #2D2D2D;
-        background: rgba(45, 45, 45, 0.3); }
-
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  overflow: hidden; }
+
+button {
+  -webkit-appearance: none !important; }
+  button:focus {
+    outline: none !important; }
+  button:active {
+    box-shadow: none !important; }
+
+div > :not(p):not(span):not(i), *:hover {
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s; }
+
+a, a:hover {
+  text-decoration: none; }
 
 ::selection {
   text-shadow: none;
@@ -61,7 +60,7 @@ body::-webkit-scrollbar-track {
   background-color: #616161 !important; }
 
 body {
-  font-family: "Segoe UI Semilight", "open sans", Calibri, sans-serif;
+  font-family: "Segoe UI Light", "open sans", Calibri, sans-serif;
   min-width: 320px; }
   @media (max-width: 320px) {
     body {
@@ -94,5 +93,102 @@ body {
 #canvas {
   width: 100%;
   height: 100%; }
+
+.button {
+  background-color: #005E81;
+  color: #FFF;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  background-clip: padding-box;
+  padding-left: 40px;
+  padding-right: 40px;
+  border: none; }
+  .button:hover {
+    background-color: #0E5068;
+    color: #FFF; }
+
+.bottom-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; }
+  @media (min-width: 768px) {
+    .bottom-controls {
+      width: auto;
+      bottom: 25px;
+      left: 25px; } }
+  .bottom-controls button {
+    font-size: 1.1em;
+    height: 50px;
+    width: 50%;
+    float: left; }
+    @media (min-width: 768px) {
+      .bottom-controls button {
+        height: 40px;
+        width: auto;
+        float: none; } }
+
+.side-controls {
+  position: fixed;
+  bottom: 0;
+  right: 0; }
+
+.left-rounded-example-btn {
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  background-clip: padding-box; }
+  @media (min-width: 768px) {
+    .left-rounded-example-btn {
+      -webkit-border-bottom-left-radius: 20px;
+      border-bottom-left-radius: 20px;
+      -webkit-border-top-left-radius: 20px;
+      border-top-left-radius: 20px;
+      background-clip: padding-box; } }
+
+.right-rounded-example-btn {
+  -webkit-border-bottom-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-border-top-right-radius: 0;
+  border-top-right-radius: 0;
+  background-clip: padding-box; }
+  @media (min-width: 768px) {
+    .right-rounded-example-btn {
+      -webkit-border-bottom-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      -webkit-border-top-right-radius: 20px;
+      border-top-right-radius: 20px;
+      background-clip: padding-box; } }
+
+.circle {
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background-clip: padding-box; }
+
+.navbar {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  background-clip: padding-box;
+  border: none;
+  color: #FFF;
+  background-color: #005E81;
+  font-family: "Segoe UI Light"; }
+  .navbar .icon-bar {
+    background-color: #FFF; }
+  .navbar li {
+    text-align: center; }
+    .navbar li a {
+      color: #FFF;
+      font-size: 1.3em;
+      -webkit-transition: all 0.35s;
+      -moz-transition: all 0.35s;
+      transition: all 0.35s; }
+      .navbar li a:hover {
+        background: #2D2D2D;
+        background: rgba(45, 45, 45, 0.3);
+        -webkit-transition: all 0.35s;
+        -moz-transition: all 0.35s;
+        transition: all 0.35s; }
 
 /*# sourceMappingURL=styles.css.map */

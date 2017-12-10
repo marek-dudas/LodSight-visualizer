@@ -3,24 +3,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>LODSight 0.1</title>
-
-    <script type="text/javascript" src="settings.js"></script>
-    <script type="text/javascript" src="spin.min.js"></script>
-    <script src="d3.v3.js"></script>
-    <script src="sparql.js"></script>
-    <script src="lodSparql.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jsonld/0.3.15/jsonld.js"></script>
-    <script src="lodPathSerializer.js"></script>
-    <script src="lodModel.js"></script>
-    <script src="lodControl.js"></script>
-    <script src="lodView.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
-    <script src="lodLoader.js"></script>
-    <script src="lodApp.js"></script>
-    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="lodPathGenerator.js"></script>
-
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./styles/graph.css">
     <link rel="stylesheet" href="./styles/styles.min.css">
@@ -30,7 +12,8 @@
 <nav class="navbar navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -51,12 +34,12 @@
 
 <div id="site_content">
     <div style="display: none">
-    <h4>Available dataset summarizations: </h4>
-    <iframe src="http://localhost/lodsight-graph-creator">
-    </iframe>
-    <div>
-        Displayed dataset: <h3 id="spanDatasetName"></h3>
-    </div>
+        <h4>Available dataset summarizations: </h4>
+        <iframe src="http://localhost/lodsight-graph-creator">
+        </iframe>
+        <div>
+            Displayed dataset: <h3 id="spanDatasetName"></h3>
+        </div>
     </div>
     <div style="display: none">
         <div>
@@ -82,16 +65,38 @@
     <div id="canvas">
         <span id="brand" title="Click to see this chart on the official LodSight website">LodSight</span>
     </div>
+    <div class="bottom-controls">
+        <button class="button btn left-rounded-example-btn" id="btnExamples">
+            load example instances
+        </button>
+        <button class="button btn right-rounded-example-btn" id="btnChangeExample">
+            next example
+        </button>
+    </div>
     <div>
-        <input type="button" value="Load examples for selected nodes" id="btnExamples">
-        <input type="button" value="Next example" id="btnChangeExample"></td>
         <input type="button" value="Start/Stop Auto-Layout" id="btnLayout"></td>
         <input type="button" value="Font Size +" id="btnFontPlus">
         <input type="button" value="Font Size -" id="btnFontMinus">
     </div>
 </div>
-</body>
+<script type="text/javascript" src="settings.js"></script>
+<script type="text/javascript" src="spin.min.js"></script>
+<script src="d3.v3.js"></script>
+<script src="sparql.js"></script>
+<script src="lodSparql.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jsonld/0.3.15/jsonld.js"></script>
+<script src="lodPathSerializer.js"></script>
+<script src="lodModel.js"></script>
+<script src="lodControl.js"></script>
+<script src="lodView.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/dojo/1.10.3/dojo/dojo.js" data-dojo-config="async: true"></script>
+<script src="lodLoader.js"></script>
+<script src="lodApp.js"></script>
+<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+<script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="lodPathGenerator.js"></script>
 <script type="text/javascript">
     var LodSight = new LodApp("canvas");
 </script>
+</body>
 </html>

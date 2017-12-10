@@ -1,0 +1,46 @@
+.bottom-controls{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  @media #{$sm} {
+    width: auto;
+    bottom: 25px;
+    left: 25px;
+  }
+  button{
+    font-size: 1.1em;
+    height: 50px;
+    width: 50%;
+    float: left;
+    @media #{$sm} {
+      height: 40px;
+      width: auto;
+      float: none;
+    }
+  }
+}
+
+.side-controls{
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.left-rounded-example-btn{
+  @include border-left-radius(0);
+  @media #{$sm} {
+    @include border-left-radius(20px);
+  }
+}
+
+.right-rounded-example-btn{
+  @include border-right-radius(0);
+  @media #{$sm} {
+    @include border-right-radius(20px);
+  }
+}
+
+.circle{
+  @include border-radius(50%);
+}

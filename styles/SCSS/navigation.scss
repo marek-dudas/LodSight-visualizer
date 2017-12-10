@@ -12,8 +12,10 @@
     a{
       color: $textLight;
       font-size: 1.3em;
+      @include hoverTransition();
       &:hover{
         @include dark-opacity();
+        @include hoverTransition();
       }
     }
   }
