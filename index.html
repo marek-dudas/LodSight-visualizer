@@ -21,20 +21,6 @@
     <script src="lodPathGenerator.js"></script>
 
     <style>
-        html {
-            height: 100%;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font: normal .80em trebuchet ms, sans-serif;
-            background: #fff;
-            color: #5D5D5D;
-        }
 
         body.noControls #ruler,
         body.noControls #logo,
@@ -56,7 +42,7 @@
             border: 0 !important;
         }
 
-        #brand{
+        #brand {
             position: absolute;
             left: 15px;
             bottom: 15px;
@@ -64,346 +50,8 @@
             display: none;
         }
 
-        #brand:hover{
+        #brand:hover {
             text-decoration: underline;
-        }
-
-        p {
-            padding: 0 0 20px 0;
-            line-height: 1.7em;
-        }
-
-        img {
-            border: 0;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font: normal 165% 'century gothic', arial, sans-serif;
-            color: #2DB8CD;
-            margin: 0 0 14px 0;
-            padding: 10px 0 5px 0;
-        }
-
-        h2 {
-            font: normal 165% 'century gothic', arial, sans-serif;
-            color: #B60000;
-        }
-
-        h3 {
-            font: normal 165% 'century gothic', arial, sans-serif;
-        }
-
-        h4, h5, h6 {
-            margin: 0;
-            padding: 0 0 5px 0;
-            font: normal 120% arial, sans-serif;
-            color: #B60000;
-        }
-
-        h5, h6 {
-            font: italic 95% arial, sans-serif;
-            color: #888;
-        }
-
-        h6 {
-            color: #362C20;
-        }
-
-        a, a:hover {
-            outline: none;
-            text-decoration: underline;
-            color: #A4AA04;
-        }
-
-        a:hover {
-            text-decoration: none;
-        }
-
-        .left {
-            float: left;
-            width: auto;
-            margin-right: 10px;
-        }
-
-        .right {
-            float: right;
-            width: auto;
-            margin-left: 10px;
-        }
-
-        .center {
-            display: block;
-            text-align: center;
-            margin: 20px auto;
-        }
-
-        blockquote {
-            margin: 20px 0;
-            padding: 10px 20px 0 20px;
-            border: 1px solid #E5E5DB;
-            background: #FFF;
-        }
-
-        ul {
-            margin: 2px 0 22px 17px;
-        }
-
-        ul li {
-            list-style-type: circle;
-            margin: 0 0 6px 0;
-            padding: 0 0 4px 5px;
-        }
-
-        ol {
-            margin: 8px 0 22px 20px;
-        }
-
-        ol li {
-            margin: 0 0 11px 0;
-        }
-
-        #main, #logo, #menubar, #site_content, #footer {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        #main {
-            padding-bottom: 20px;
-        }
-
-        #header {
-            background: transparent;
-            height: 170px;
-        }
-
-        #logo {
-            width: 860px;
-            position: relative;
-            height: 134px;
-        }
-
-        #logo h1, #logo h2 {
-            font: normal 300% "century gothic", arial, sans-serif;
-        }
-
-        #logo h1 {
-            padding: 24px 0 0 0;
-            margin: 0;
-            color: #B60000;
-        }
-
-        #logo h2 {
-            font-size: 120%;
-            padding: 4px 0 0 0;
-            color: #A8AA94;
-        }
-
-        #logo h1, #logo h1 a, #logo h1 a:hover, #brand {
-            padding: 22px 0 0 0;
-            color: #B60000;
-            text-decoration: none;
-        }
-
-        #logo h1 a .logo_colour {
-            color: #888;
-        }
-
-        #logo a:hover .logo_colour {
-            color: #FFF;
-        }
-
-        #menubar {
-            height: 24px;
-            width: 900px;
-        }
-
-        ul#menu {
-            float: right;
-            margin: 0;
-            padding: 0;
-        }
-
-        ul#menu li {
-            float: left;
-            padding: 0;
-            list-style: none;
-            margin: 5px 2px 0 0;
-        }
-
-        ul#menu li a {
-            font: normal 100% 'trebuchet ms', sans-serif;
-            display: block;
-            float: left;
-            height: 20px;
-            padding: 6px 20px 5px 20px;
-            text-align: center;
-            color: #000;
-            text-decoration: none;
-            background: #E0E0E0;
-        }
-
-        ul#menu li.selected a, ul#menu li.selected a:hover {
-            background: #FFF;
-            color: #B60000;
-        }
-
-        ul#menu li a:hover {
-            color: #B60000;
-        }
-
-        #site_content {
-            width: 858px;
-            overflow: hidden;
-            margin: 0 auto 0 auto;
-            padding: 10px 10px 10px 10px;
-            border: 2px solid #ccc;
-        }
-
-        .sidebar {
-            float: right;
-            width: 190px;
-            padding: 0 15px 20px 15px;
-        }
-
-        .sidebar ul {
-            width: 178px;
-            padding: 4px 0 0 0;
-            margin: 4px 0 30px 0;
-        }
-
-        .sidebar li {
-            list-style: none;
-            padding: 0 0 7px 0;
-        }
-
-        .sidebar li a, .sidebar li a:hover {
-            padding: 0 0 0 25px;
-            display: block;
-            background: transparent url(link.png) no-repeat left center;
-        }
-
-        .sidebar li a.selected {
-            color: #444;
-            text-decoration: none;
-        }
-
-        #content {
-            text-align: left;
-            width: 613px;
-            padding: 0;
-        }
-
-        #footer {
-            width: 916px;
-            font-family: sans-serif;
-            font-size: 90%;
-            height: 28px;
-            padding: 20px 0 5px 0;
-            text-align: center;
-            background: transparent;
-            color: #111;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        #footer a, #footer a:hover {
-            color: #111;
-            text-decoration: underline;
-        }
-
-        #footer a:hover {
-            text-decoration: none;
-        }
-
-        #footer p {
-            line-height: 22px;
-            padding: 0;
-        }
-
-        .search {
-            color: #555;
-            border: 1px solid #DDD;
-            width: 134px;
-            padding: 5px;
-        }
-
-        .form_settings {
-            margin: 15px 0 0 0;
-        }
-
-        .form_settings p {
-            padding: 0 0 4px 0;
-        }
-
-        .form_settings span {
-            float: left;
-            width: 200px;
-            text-align: left;
-        }
-
-        .form_settings input, .form_settings textarea {
-            padding: 5px;
-            width: 299px;
-            font: 100% arial;
-            border: 1px solid #E5E5DB;
-            background: #FFF;
-            color: #47433F;
-        }
-
-        .form_settings .submit {
-            font: 100% arial;
-            border: 0;
-            width: 99px;
-            margin: 0 0 0 212px;
-            height: 33px;
-            padding: 2px 0 3px 0;
-            cursor: pointer;
-            background: #3B3B3B;
-            color: #FFF;
-        }
-
-        .form_settings textarea, .form_settings select {
-            font: 100% arial;
-            width: 299px;
-        }
-
-        .form_settings select {
-            width: 310px;
-        }
-
-        .form_settings .checkbox {
-            margin: 4px 0;
-            padding: 0;
-            width: 14px;
-            border: 0;
-            background: none;
-        }
-
-        .separator {
-            width: 100%;
-            height: 0;
-            border-top: 1px solid #D9D5CF;
-            border-bottom: 1px solid #FFF;
-            margin: 0 0 20px 0;
-        }
-
-        table {
-            margin: 10px 0 30px 0;
-            /*font: 10px Helvetica Neue, Helvetica, Arial, sans-serif;*/
-            font: normal 0.9em trebuchet ms, sans-serif;
-        }
-
-        table tr th, table tr td {
-            background: #3B3B3B;
-            color: #FFF;
-            padding: 7px 4px;
-            text-align: left;
-        }
-
-        table tr td {
-            background: #E5E5DB;
-            color: #47433F;
-            border-top: 1px solid #FFF;
         }
 
         /* visualizer styles */
@@ -477,229 +125,58 @@
         .typelabel text {
             fill: #cccccc;
         }
-
-        .button {
-            border-top: 1px solid #d6d6d6;
-            background: #d6d6d6;
-            /*
-            background: -webkit-gradient(linear, left top, left bottom, from(#3e779d), to(#65a9d7));
-            background: -webkit-linear-gradient(top, #3e779d, #65a9d7);
-            background: -moz-linear-gradient(top, #3e779d, #65a9d7);
-            background: -ms-linear-gradient(top, #3e779d, #65a9d7);
-            background: -o-linear-gradient(top, #3e779d, #65a9d7);*/
-            padding: 3px 5px;
-            -webkit-border-radius: 13px;
-            -moz-border-radius: 13px;
-            border-radius: 13px;
-            text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
-            color: black;
-            font-size: 12px;
-            font-family: Helvetica, Arial, Sans-Serif;
-            text-decoration: none;
-            vertical-align: middle;
-        }
-
-        .button:hover {
-            border-top-color: #28597a;
-            background: #28597a;
-            color: #ccc;
-        }
-
-        .button:active {
-            border-top-color: #d6d6d6;
-            background: #d6d6d6;
-        }
-
-        .roundbox {
-            -webkit-border-radius: 15px;
-            border-radius: 15px;
-            border: 6px #d6d6d6 solid;
-
-            -moz-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-            -webkit-box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-            box-shadow: inset 0px 0px 13px 3px #d6d6d6;
-        }
-
-        .roundboxNoShadow {
-            -webkit-border-radius: 15px;
-            border-radius: 15px;
-            border: 6px #d6d6d6 solid;
-            background-color: white;
-
-        }
-
-        .toolheading {
-            font: 14px Helvetica Neue, Helvetica, Arial, sans-serif;
-            color: grey;
-            font-weight: bold;
-        }
-
-        #ruler {
-            visibility: hidden;
-            white-space: nowrap;
-            font: 16px Helvetica Neue, Helvetica, Arial, sans-serif;
-        }
     </style>
 
 </head>
 <body>
 <span id="ruler"></span>
 <div id="logo">
-    <div style="float:left">
-        <h1>LodSight</h1>
-        <h2 style="display:inline">An RDF dataset summarization tool [v0.1]</h2>
-        <a href="about.html">Learn more</a>&nbsp&nbsp<a href="#help">Help</a>&nbsp&nbsp<a href="/lodsight-v2">Checkout
-        the new version!</a>
+    <div>
+        <a href="about.html">Learn more</a>
+        <a href="#help">Help</a>
     </div>
-    <img src="http://www.vse.cz/img/vse-logo.gif" style="float:right">
 </div>
 
-<div style="width:1290px; margin-bottom:20px" id="site_content">
-
-
+<div id="site_content">
     <h4>Available dataset summarizations: </h4>
-    <iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight-graph-creator" width="100%" height="200px">
-    <!--<iframe style="background-color: white; margin-bottom:15px" src="http://localhost/lodsight/lodsight-graph-creator" width="100%" height="200px"> -->
-        <!-- src="http://lod2-dev.vse.cz/lodsight/graph-creator http://localhost/lodsight-graph-creator" -->
+    <iframe src="http://localhost/lodsight-graph-creator">
     </iframe>
-    <div style="text-align: center;">
-        Displayed dataset: <h3 style="font-weight: bold; display:inline" id="spanDatasetName"></h3>
+    <div>
+        Displayed dataset: <h3 id="spanDatasetName"></h3>
     </div>
-    <div style="float:left; width:370px;">
+    <div>
         <div>
-            <div style="text-align: justify">
-                <h3 style="display: inline-block;">Filtering Tools</h3>&nbsp&nbsp&nbsp<input type="button"
-                                                                                             value="Update Filters"
-                                                                                             id="btnUpdate"
-                                                                                             class="button">
+            <div>
+                <h3>Filtering Tools</h3>
+                <input type="button" value="Update Filters" id="btnUpdate">
             </div>
             <h4>Predicates in the graph:</h4>
-            <div style="border:2px solid #ccc;height:200px;overflow-y: scroll;" id="divPredicateList">
+            <div id="divPredicateList">
             </div>
-            <br>
         </div>
-        <div style="margin-bottom: 5px;">
+        <div>
             Detail: <span id="spnLOD">100</span>%
             <input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq">
-            <br>
             Path frequency threshold: <span id="spnMaxFreq">100</span>%
             <input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq">
         </div>
         <div id="divPrefixList">
             <h4>Namespace prefixes:</h4>
         </div>
-        <input type="button" value="Update Filters" id="btnUpdatePredicates" class="button">
-
-
+        <input type="button" value="Update Filters" id="btnUpdatePredicates">
     </div>
 
-    <div style="float:right; width:900px; height:600px; margin-top:0px; margin-bottom:5px;" id="canvas" class="roundboxNoShadow">
+    <div id="canvas">
         <span id="brand" title="Click to see this chart on the official LodSight website">LodSight</span>
     </div>
-    <div style="float:right;">
-        <table>
-            <tr>
-                <td>
-
-                <td>
-                    <input type="checkbox" id="boxViewSets" checked="checked"> Show datatypes
-                </td>
-                <td>
-                    <input type="button" value="Load examples for selected nodes" id="btnExamples" class="button">
-
-                    <select id="selSamplingMethod">
-                        <option value="random">Random</option>
-                        <option value="distinct">Distinct</option>
-                        <option value="representative">Representative</option>
-                    </select>
-
-                    <input type="button" value="Next example" id="btnChangeExample" class="button"></td>
-                <td>
-                    <input type="button" value="Start/Stop Auto-Layout" id="btnLayout" class="button"></td>
-                <td>
-                    <input type="button" value="Font Size +" id="btnFontPlus" class="button">
-
-                    <input type="button" value="Font Size -" id="btnFontMinus" class="button">
-                </td>
-                <td>
-                    <input type="button" value="generate paths" id="btnGeneratePaths" class="button">
-                </td>
-            </tr>
-        </table>
+    <div>
+        <input type="button" value="Load examples for selected nodes" id="btnExamples">
+        <input type="button" value="Next example" id="btnChangeExample"></td>
+        <input type="button" value="Start/Stop Auto-Layout" id="btnLayout"></td>
+        <input type="button" value="Font Size +" id="btnFontPlus">
+        <input type="button" value="Font Size -" id="btnFontMinus">
     </div>
-
-    <div style="float:right; width:900px">
-        <table>
-            <tr>
-                <td style="vertical-align: top">
-                    <h4 id="help">What is This?</h4>
-                    <ul>
-                        <li>This app shows summarizations of linked datasets: graphs created from classes and predicates
-                            that connect instances of these classes in the dataset.
-                        </li>
-                        <li>Summarizations are created offline and only some are available at the moment.
-                            <a href="about.html">Learn more and contact us to get your dataset visualized here.</a></li>
-                        <li>Nodes from different namespaces have different color.
-                            The namespace prefixes are defined at the bottom-left part of the page.
-                        </li>
-                    </ul>
-                </td>
-                <td style="vertical-align: top">
-                    <h4>How to Use</h4>
-                    <ul>
-                        <li>Click on one of the dataset links at the top of the page to see its visualization.</li>
-                        <li>Tick several datasets and click <b>"Load all selected datasets"</b> to see visualizations of
-                            several datasets merged into one graph.
-                        </li>
-                        <li><b>Zoom</b> in or out with the mousewheel or equivalent scrolling controls.</li>
-                        <li><b>Move around the visualization</b> by clicking outside nodes and holding&moving the mouse
-                            ("drag&drop").
-                        </li>
-                        <li><b>Move the nodes</b> by similar "drag&drop" means.</li>
-                        <li>Prevent (or encourage) nodes from "jumping around" by clicking on <b>"start/stop auto
-                            layout."</b></li>
-                        <li><b>"Show datatypes"</b> checkbox controls whether datatype properties are displayed.</li>
-                        <li><b>Select</b> class nodes and predicates by left-clicking on them. Right-click cancels the
-                            selection.
-                        </li>
-                        <li>Clicking <b>"Load examples for selected nodes"</b> shows examples of instances of
-                            selected classes connected by selected predicates (above the class nodes).
-                        </li>
-                        <li><b>"Next Example"</b> button loads another example combination of instances for selected
-                            class&predicate combination.
-                        </li>
-                        <li><b>"Font Size"</b> buttons increase or decrease font size of class node labels.</li>
-                        <li>Tip: you can achieve a sort of <b>fullscreen</b> view by zooming-in at the browser level
-                            (e.g. click outside the visualization window, then hold CTRL and scroll-up with mousewheel),
-                            thus enlarging the visualization window,
-                            and then zooming-out at the visualization level (click inside the visualization window and
-                            scroll-down with mousewheel).
-                        </li>
-                    </ul>
-                </td>
-                <td style="vertical-align: top">
-                    <h4>Using the Filters</h4>
-                    <ul>
-                        <li>Move the <b>"Detail"</b> slider to the right to encrease the minimum occurence count
-                            threshold.
-                            The higher the threshold, the more instantiations the combination of classes and predicates
-                            must have to be displayed.
-                            After setting the slider, click "Update Filters" and wait a few seconds for reload.
-                        </li>
-                        <li><b>Path frequency threshold</b> works analogously as <b>Detail</b>, but changes the maximum
-                            number of instantiations.
-                        </li>
-                        <li><b>Predicates</b> list shows all predicates in the dataset. Tick some of them and click
-                            "Update Filters" to limit the visualized graph to paths containing the selected predicates.
-                        </li>
-                        <li><b>Namespaces</b> list shows all ontologies used in the dataset. Tick some of them and click
-                            "Update Filters" to limit the visualization to entities from selected ontologies.
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
-    </div>
+</div>
 </body>
 <script type="text/javascript">
     var LodSight = new LodApp("canvas", 900, 600);
