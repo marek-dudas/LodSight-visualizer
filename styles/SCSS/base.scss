@@ -1,0 +1,78 @@
+
+::selection {
+  text-shadow: none;
+  background-color: $gray;
+  color: $light;
+}
+
+::-moz-selection {
+  text-shadow: none;
+  background-color: $gray;
+  color: $light;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f1f1f1;
+}
+
+body::-webkit-scrollbar {
+  width: 7px !important;
+  background-color: #EEEEEE;
+}
+
+::-webkit-scrollbar-track {
+  border: 6px;
+}
+
+body::-webkit-scrollbar-track {
+  border: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242 !important;
+  border-radius: 0px !important;
+  border: none;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #333 !important;
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #616161 !important;
+}
+
+body {
+  font-family: "Segoe UI Semilight", "open sans", Calibri, sans-serif;
+  min-width: 320px;
+  @media #{$xxs}{
+    overflow-x: scroll;
+  }
+  .noControls{
+    #ruler, #logo, #site_content > * {
+      display: none;
+    }
+    #brand, #site_content > #canvas{
+      display: block;
+    }
+    #site_content, #site_content > * {
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+    }
+  }
+}
+
+#brand {
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  cursor: pointer;
+  display: none;
+  &:hover{
+    text-decoration: underline;
+  }
+}

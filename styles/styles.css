@@ -1,3 +1,64 @@
+/*____COLORS____*/
+/*____MEDIA QUERY BREAKPOINTS____*/
+::selection {
+  text-shadow: none;
+  background-color: #626262;
+  color: #FFF; }
 
+::-moz-selection {
+  text-shadow: none;
+  background-color: #626262;
+  color: #FFF; }
+
+::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f1f1f1; }
+
+body::-webkit-scrollbar {
+  width: 7px !important;
+  background-color: #EEEEEE; }
+
+::-webkit-scrollbar-track {
+  border: 6px; }
+
+body::-webkit-scrollbar-track {
+  border: none; }
+
+::-webkit-scrollbar-thumb {
+  background-color: #424242 !important;
+  border-radius: 0px !important;
+  border: none; }
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #333 !important; }
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #616161 !important; }
+
+body {
+  font-family: "Segoe UI Semilight", "open sans", Calibri, sans-serif;
+  min-width: 320px; }
+  @media (max-width: 320px) {
+    body {
+      overflow-x: scroll; } }
+  body .noControls #ruler, body .noControls #logo, body .noControls #site_content > * {
+    display: none; }
+  body .noControls #brand, body .noControls #site_content > #canvas {
+    display: block; }
+  body .noControls #site_content, body .noControls #site_content > * {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important; }
+
+#brand {
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  cursor: pointer;
+  display: none; }
+  #brand:hover {
+    text-decoration: underline; }
 
 /*# sourceMappingURL=styles.css.map */
