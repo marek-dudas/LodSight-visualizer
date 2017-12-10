@@ -86,12 +86,8 @@ body {
 
 #site_content{
   width: 100%;
-  height: calc(100% - 60px);
-  margin-top: 60px;
-  @media #{$sm}{
-    height: calc(100% - 80px);
-    margin-top: 80px;
-  }
+  height: 100%;
+  padding-top: 50px;
 }
 #canvas{
   width: 100%;

@@ -1,0 +1,20 @@
+.navbar{
+  @include border-radius(0);
+  border: none;
+  color: $textLight;
+  background-color: $themeColor;
+  font-family: "Segoe UI Light";
+  .icon-bar{
+    background-color: $textLight;
+  }
+  li{
+    text-align: center;
+    a{
+      color: $textLight;
+      font-size: 1.3em;
+      &:hover{
+        @include dark-opacity();
+      }
+    }
+  }
+}
