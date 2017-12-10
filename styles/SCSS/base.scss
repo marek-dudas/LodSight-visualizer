@@ -1,4 +1,11 @@
 
+html, body{
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
 ::selection {
   text-shadow: none;
   background-color: $gray;
@@ -75,4 +82,18 @@ body {
   &:hover{
     text-decoration: underline;
   }
+}
+
+#site_content{
+  width: 100%;
+  height: calc(100% - 60px);
+  margin-top: 60px;
+  @media #{$sm}{
+    height: calc(100% - 80px);
+    margin-top: 80px;
+  }
+}
+#canvas{
+  width: 100%;
+  height: 100%;
 }

@@ -1,5 +1,11 @@
 /*____COLORS____*/
 /*____MEDIA QUERY BREAKPOINTS____*/
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%; }
+
 ::selection {
   text-shadow: none;
   background-color: #626262;
@@ -60,5 +66,18 @@ body {
   display: none; }
   #brand:hover {
     text-decoration: underline; }
+
+#site_content {
+  width: 100%;
+  height: calc(100% - 60px);
+  margin-top: 60px; }
+  @media (min-width: 768px) {
+    #site_content {
+      height: calc(100% - 80px);
+      margin-top: 80px; } }
+
+#canvas {
+  width: 100%;
+  height: 100%; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -1,6 +1,7 @@
 function LodView(width, height, viewingElement){
-	this.width =  width;
-	this.height = height;
+	var viewingElem = document.getElementById(viewingElement);
+	this.width = typeof width === 'undefined' ? viewingElem.clientWidth : width;
+	this.height = typeof height === 'undefined' ? viewingElem.clientHeight : height;
 	this.colors = d3.scale.category20();
     this.layoutRunning = true;
     
@@ -8,7 +9,7 @@ function LodView(width, height, viewingElement){
 
     if(LodLoader.isConstrolsHidden){
         d3.select("body").attr("class", "noControls");
-        this.width =  window.innerWidth;
+        this.width = window.innerWidth;
         this.height = window.innerHeight - 3;
     }else{
         d3.select("body").attr("class", "");
