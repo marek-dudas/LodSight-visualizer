@@ -91,10 +91,12 @@ LodView.prototype.initControls = function(controller) {
 		if(view.layoutRunning) {
 			view.layout.stop();
 			view.layoutRunning = false;
+			document.getElementById("btnLayout").innerHTML = '<i class="fa fa-play"></i>';
 		}
 		else {
 			view.layout.start();
 			view.layoutRunning = true;
+            document.getElementById("btnLayout").innerHTML = '<i class="fa fa-pause"></i>';
 			for(var i=0; i<view.model.nodes.length; i++) view.model.nodes[i].fixed = false;
 		}
 	});
@@ -151,7 +153,25 @@ LodView.prototype.initControls = function(controller) {
         var newUrl = currentUrl.replace(/(controls=)[^\&]+/, '$1' + controls);
         window.open(newUrl, '_blank');
     });
-	
+
+	d3.select("#settings").on('click', function(){
+		var more = d3.select(".more-settings");
+		more.classed("open", !more.classed("open"));
+	});
+
+	d3.select(".side-controls-toggle").on('click', function(){
+		var controls = d3.select(".side-controls");
+		controls.classed("open", !controls.classed("open"));
+        var html = '';
+        if(controls.classed("open")){
+            html = '<i class="fa fa-close fa-2x"></i>';
+		}else{
+            html = '<i class="fa fa-cog fa-2x"></i>';
+            d3.select(".more-settings").classed("open", false);
+		}
+		d3.select(".side-controls-toggle").html(html);
+	});
+
 };
 
 LodView.prototype.updateMaxFreqLabel = function(value) {

@@ -4,6 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>LODSight 0.1</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="./styles/graph.css">
     <link rel="stylesheet" href="./styles/styles.min.css">
 </head>
@@ -73,10 +74,31 @@
             next example
         </button>
     </div>
-    <div>
-        <input type="button" value="Start/Stop Auto-Layout" id="btnLayout"></td>
-        <input type="button" value="Font Size +" id="btnFontPlus">
-        <input type="button" value="Font Size -" id="btnFontMinus">
+    <div class="side-controls">
+        <div class="side-controls-inner">
+            <div class="more-settings">
+                <button class="button btn side-button-small" id="btnLayout">
+                    <i class="fa fa-pause"></i>
+                </button>
+                <button class="button btn side-button-small" id="btnFontPlus">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button class="button btn side-button-small" id="btnFontMinus">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+            <button class="button btn side-button-large" id="settings">
+                <i class="fa fa-cogs fa-2x"></i>
+            </button>
+            <button class="button btn side-button-large" id="filter">
+                <i class="fa fa-filter fa-2x"></i>
+            </button>
+        </div>
+        <div>
+            <button class="button btn side-button-large side-controls-toggle">
+                <i class="fa fa-cog fa-2x"></i>
+            </button>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="settings.js"></script>

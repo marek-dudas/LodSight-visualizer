@@ -23,8 +23,98 @@
 
 .side-controls{
   position: fixed;
-  bottom: 0;
-  right: 0;
+  bottom: 75px;
+  right: 25px;
+  font-size: .8em;
+  @media #{$sm} {
+    bottom: 25px;
+  }
+  .side-controls-toggle{
+    font-size: 1.5em;
+    cursor: pointer;
+    color: $textLight;
+    background-color: $themeColor;
+    @include border-radius(50%);
+    &:hover{
+      background-color: $themeColorHover;
+      color: $textLight
+    }
+    @media #{$sm} {
+      display: none;
+    }
+  }
+  button{
+    @include border-radius(50%);
+  }
+  .side-controls-inner, .more-settings{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: space-between;
+    flex-direction: column;
+  }
+
+  .side-controls-inner{
+    button.side-button-large{
+      @include transform(translateX(250px));
+        @media #{$sm} {
+          @include transform(translateX(0));
+        }
+      &:nth-child(2){
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .15s);
+      }
+      &:nth-child(1){
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s);
+      }
+    }
+  }
+
+  .more-settings{
+    button{
+      opacity: 0;
+      @include transform(translateY(50px));
+      &:nth-child(3){
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s, opacity .2s linear 0s);
+      }
+      &:nth-child(2){
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .05s, opacity .2s linear .05s);
+      }
+      &:nth-child(1){
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
+      }
+    }
+    &.open{
+      button{
+        opacity: 1;
+        @include transform(translateY(0));
+        &:nth-child(1){
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s, opacity .2s linear 0s);
+        }
+        &:nth-child(2){
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .05s, opacity .2s linear .05s);
+        }
+        &:nth-child(3){
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
+        }
+      }
+    }
+  }
+  &.open{
+    align-items: flex-end;
+    right: 25px;
+    bottom: 75px;
+    .side-controls-inner{
+      button.side-button-large{
+        @include transform(translateX(0));
+        &:nth-child(1){
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s);
+        }
+        &:nth-child(2){
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .15s);
+        }
+      }
+    }
+  }
 }
 
 .left-rounded-example-btn{
@@ -41,6 +131,17 @@
   }
 }
 
-.circle{
-  @include border-radius(50%);
+.side-button-small{
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin-top: 15px;
 }
+
+.side-button-large{
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  margin-top: 20px;
+}
+

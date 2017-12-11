@@ -103,7 +103,7 @@ body {
   padding-left: 40px;
   padding-right: 40px;
   border: none; }
-  .button:hover {
+  .button:hover, .button:active, .button:focus {
     background-color: #0E5068;
     color: #FFF; }
 
@@ -130,8 +130,128 @@ body {
 
 .side-controls {
   position: fixed;
-  bottom: 0;
-  right: 0; }
+  bottom: 75px;
+  right: 25px;
+  font-size: .8em; }
+  @media (min-width: 768px) {
+    .side-controls {
+      bottom: 25px; } }
+  .side-controls .side-controls-toggle {
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #FFF;
+    background-color: #005E81;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-clip: padding-box; }
+    .side-controls .side-controls-toggle:hover {
+      background-color: #0E5068;
+      color: #FFF; }
+    @media (min-width: 768px) {
+      .side-controls .side-controls-toggle {
+        display: none; } }
+  .side-controls button {
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-clip: padding-box; }
+  .side-controls .side-controls-inner, .side-controls .more-settings {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: space-between;
+    flex-direction: column; }
+  .side-controls .side-controls-inner button.side-button-large {
+    -webkit-transform: translateX(250px);
+    -moz-transform: translateX(250px);
+    -o-transform: translateX(250px);
+    transform: translateX(250px); }
+    @media (min-width: 768px) {
+      .side-controls .side-controls-inner button.side-button-large {
+        -webkit-transform: translateX(0);
+        -moz-transform: translateX(0);
+        -o-transform: translateX(0);
+        transform: translateX(0); } }
+    .side-controls .side-controls-inner button.side-button-large:nth-child(2) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s; }
+    .side-controls .side-controls-inner button.side-button-large:nth-child(1) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s; }
+  .side-controls .more-settings button {
+    opacity: 0;
+    -webkit-transform: translateY(50px);
+    -moz-transform: translateY(50px);
+    -o-transform: translateY(50px);
+    transform: translateY(50px); }
+    .side-controls .more-settings button:nth-child(3) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s; }
+    .side-controls .more-settings button:nth-child(2) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s; }
+    .side-controls .more-settings button:nth-child(1) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s; }
+  .side-controls .more-settings.open button {
+    opacity: 1;
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0); }
+    .side-controls .more-settings.open button:nth-child(1) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s; }
+    .side-controls .more-settings.open button:nth-child(2) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s; }
+    .side-controls .more-settings.open button:nth-child(3) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s; }
+  .side-controls.open {
+    align-items: flex-end;
+    right: 25px;
+    bottom: 75px; }
+    .side-controls.open .side-controls-inner button.side-button-large {
+      -webkit-transform: translateX(0);
+      -moz-transform: translateX(0);
+      -o-transform: translateX(0);
+      transform: translateX(0); }
+      .side-controls.open .side-controls-inner button.side-button-large:nth-child(1) {
+        -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+        -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+        -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+        -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
+        transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s; }
+      .side-controls.open .side-controls-inner button.side-button-large:nth-child(2) {
+        -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+        -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+        -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+        -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s;
+        transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.15s; }
 
 .left-rounded-example-btn {
   -webkit-border-bottom-left-radius: 0;
@@ -161,10 +281,17 @@ body {
       border-top-right-radius: 20px;
       background-clip: padding-box; } }
 
-.circle {
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  background-clip: padding-box; }
+.side-button-small {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin-top: 15px; }
+
+.side-button-large {
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  margin-top: 20px; }
 
 .navbar {
   -webkit-border-radius: 0;

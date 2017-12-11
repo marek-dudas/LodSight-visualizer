@@ -121,7 +121,7 @@ body {
   padding-left: 40px;
   padding-right: 40px;
   border: none;
-  &:hover{
+  &:hover, &:active, &:focus{
     background-color: $themeColorHover;
     color: $textLight;
   }
