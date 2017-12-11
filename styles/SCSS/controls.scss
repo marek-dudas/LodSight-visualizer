@@ -71,30 +71,32 @@
 
   .more-settings{
     button{
+      visibility: hidden;
       opacity: 0;
       @include transform(translateY(50px));
       &:nth-child(3){
         @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s, opacity .2s linear 0s);
       }
       &:nth-child(2){
-        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .05s, opacity .2s linear .05s);
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
       }
       &:nth-child(1){
-        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
+        @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .2s, opacity .2s linear .2s);
       }
     }
     &.open{
       button{
+        visibility: visible;
         opacity: 1;
         @include transform(translateY(0));
         &:nth-child(1){
           @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) 0s, opacity .2s linear 0s);
         }
         &:nth-child(2){
-          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .05s, opacity .2s linear .05s);
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
         }
         &:nth-child(3){
-          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .1s, opacity .2s linear .1s);
+          @include transition(transform .2s cubic-bezier(.51,.92,.24,1.15) .2s, opacity .2s linear .2s);
         }
       }
     }

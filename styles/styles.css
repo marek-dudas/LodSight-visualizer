@@ -184,6 +184,7 @@ body {
       -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s;
       transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s; }
   .side-controls .more-settings button {
+    visibility: hidden;
     opacity: 0;
     -webkit-transform: translateY(50px);
     -moz-transform: translateY(50px);
@@ -196,18 +197,19 @@ body {
       -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
       transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s; }
     .side-controls .more-settings button:nth-child(2) {
-      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s; }
-    .side-controls .more-settings button:nth-child(1) {
       -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s; }
+    .side-controls .more-settings button:nth-child(1) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s; }
   .side-controls .more-settings.open button {
+    visibility: visible;
     opacity: 1;
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
@@ -220,17 +222,17 @@ body {
       -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s;
       transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0s, opacity 0.2s linear 0s; }
     .side-controls .more-settings.open button:nth-child(2) {
-      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s;
-      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.05s, opacity 0.2s linear 0.05s; }
-    .side-controls .more-settings.open button:nth-child(3) {
       -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s;
       transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.1s, opacity 0.2s linear 0.1s; }
+    .side-controls .more-settings.open button:nth-child(3) {
+      -webkit-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -moz-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -ms-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      -o-transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s;
+      transition: transform 0.2s cubic-bezier(0.51, 0.92, 0.24, 1.15) 0.2s, opacity 0.2s linear 0.2s; }
   .side-controls.open {
     align-items: flex-end;
     right: 25px;

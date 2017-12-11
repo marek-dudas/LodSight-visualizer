@@ -77,20 +77,20 @@
     <div class="side-controls">
         <div class="side-controls-inner">
             <div class="more-settings">
-                <button class="button btn side-button-small" id="btnLayout">
+                <button class="button btn side-button-small" id="btnLayout" data-placement="top" data-toggle="tooltip" title="auto layout">
                     <i class="fa fa-pause"></i>
                 </button>
-                <button class="button btn side-button-small" id="btnFontPlus">
+                <button class="button btn side-button-small" id="btnFontPlus" data-placement="top" data-toggle="tooltip" title="font size +">
                     <i class="fa fa-plus"></i>
                 </button>
-                <button class="button btn side-button-small" id="btnFontMinus">
+                <button class="button btn side-button-small" id="btnFontMinus" data-placement="top" data-toggle="tooltip" title="font size -">
                     <i class="fa fa-minus"></i>
                 </button>
             </div>
-            <button class="button btn side-button-large" id="settings">
+            <button class="button btn side-button-large" id="settings" data-placement="top" data-toggle="tooltip" title="settings">
                 <i class="fa fa-cogs fa-2x"></i>
             </button>
-            <button class="button btn side-button-large" id="filter">
+            <button class="button btn side-button-large" id="filter" data-placement="top" data-toggle="tooltip" title="tilter">
                 <i class="fa fa-filter fa-2x"></i>
             </button>
         </div>
@@ -119,6 +119,7 @@
 <script src="lodPathGenerator.js"></script>
 <script type="text/javascript">
     var LodSight = new LodApp("canvas");
+    $('[data-toggle="tooltip"]').tooltip();
 </script>
 </body>
 </html>
