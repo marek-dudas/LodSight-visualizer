@@ -1,0 +1,40 @@
+.modal-content {
+  @include border-radius(0);
+}
+
+.modal-header {
+  background-color: $themeColor;
+  color: $textLight;
+  border: 0;
+  button {
+    color: $textLight;
+    text-shadow: none;
+    opacity: 1;
+    &:hover{
+      color: $textLight;
+    }
+  }
+}
+
+.modal-body{
+  .horizontal-line{
+    border-bottom: 1px solid $themeColor;
+  }
+  h5{
+    color: $themeColor;
+    font-size: 1.2em;
+  }
+}
+
+.modal-inner{
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.modal-footer{
+  border: 0;
+}
+
+.modal-lg {
+  width: 90%;
+}

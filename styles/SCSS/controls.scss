@@ -45,6 +45,13 @@
   }
   button{
     @include border-radius(50%);
+    span{
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
   }
   .side-controls-inner, .more-settings{
     display: flex;
