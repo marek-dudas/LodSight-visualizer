@@ -531,7 +531,7 @@ LodView.prototype.updateView = function(controller) {
 			});
 	    this.predicates.exit().remove();
 
-    d3.select("#spanDatasetName").text(this.model.dataset.split(",").slice(0, 2));
+    d3.select("#spanDatasetName").text(this.model.dataset.split(",").slice(0, 1));
 
     if(this.layoutRunning) this.layout.start();
     this.tick();
