@@ -17,12 +17,103 @@
 }
 
 .modal-body{
+  padding: 15px;
+  @media #{$sm} {
+    padding: 15px 60px;
+  }
   .horizontal-line{
     border-bottom: 1px solid $themeColor;
   }
   h5{
     color: $themeColor;
     font-size: 1.2em;
+    font-weight: bold;
+  }
+  .checkboxes-wrapper{
+    height: 40vh;
+    &.checkboxes-wrapper-lg{
+        height: 55vh;
+    }
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0;
+    list-style: none;
+    li{
+      padding: 0;
+      &:before{
+        display: table;
+        content: ""
+      }
+      &:after{
+        display: table;
+        content: " ";
+        clear: both;
+      }
+      &:hover{
+        background-color: $light-hover;
+      }
+    }
+  }
+
+  .button-small{
+    a{
+      display: block;
+      button{
+        margin: auto;
+        display: block;
+        height: 25px;
+        padding: 3px 10px;
+        @include border-radius(12px);
+        @media #{$sm} {
+          padding: 3px 30px;
+        }
+      }
+    }
+  }
+
+  .dot{
+    width: 20px;
+    height: 20px;
+    @include border-radius(10px);
+    margin: 5px;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    @include border-radius(0);
+    background: $light-hover;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 30px;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    @include border-radius(50%);
+    background: $themeComplementary;
+    cursor: pointer;
+    &:hover{
+      background: $themeComplementaryHover;
+    }
+  }
+
+  .slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    @include border-radius(50%);
+    background: $themeComplementary;
+    cursor: pointer;
+    &:hover{
+      background: $themeComplementaryHover;
+    }
   }
 }
 
@@ -33,8 +124,43 @@
 
 .modal-footer{
   border: 0;
+  padding: 30px;
+  button{
+    height: 40px;
+    @include border-radius(20px);
+    a{
+      color: $textLight;
+      text-decoration: none;
+      &:hover{
+        color: $textLight;
+      }
+    }
+  }
 }
 
 .modal-lg {
-  width: 90%;
+  @media #{$sm} {
+    width: 90%;
+  }
 }
+
+#divDatasetList{
+  label{
+    font-weight: bold;
+    @media #{$md} {
+      font-weight: normal;
+    }
+  }
+}
+
+.datasetItem{
+  padding: 0 0 0 30px;
+  @media #{$md} {
+    padding: 0;
+  }
+}
+
+label{
+  word-break: break-all;
+}
+

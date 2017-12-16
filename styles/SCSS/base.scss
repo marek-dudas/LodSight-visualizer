@@ -75,8 +75,8 @@ body {
   @media #{$xxs}{
     overflow-x: scroll;
   }
-  .noControls{
-    #ruler, #logo, #site_content > * {
+  &.noControls{
+    #ruler, #logo, nav, #site_content > * {
       display: none;
     }
     #brand, #site_content > #canvas{
@@ -133,4 +133,41 @@ body {
 
 .m0{
   margin: 0;
+}
+
+.m-y-30{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.m-y-5{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.m-y-20-sm{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media #{$sm} {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+
+.abc-checkbox{
+  label{
+    padding-left: 15px;
+  }
+}
+
+.checkbox{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.abc-checkbox-primary input[type="checkbox"]:checked + label::before,
+.abc-checkbox-primary input[type="radio"]:checked + label::before {
+  background-color: $themeColor;
+  border-color: $themeColor; }
+
+.label-info{
+  background-color: $themeComplementary;
 }

@@ -65,11 +65,11 @@ body {
   @media (max-width: 320px) {
     body {
       overflow-x: scroll; } }
-  body .noControls #ruler, body .noControls #logo, body .noControls #site_content > * {
+  body.noControls #ruler, body.noControls #logo, body.noControls nav, body.noControls #site_content > * {
     display: none; }
-  body .noControls #brand, body .noControls #site_content > #canvas {
+  body.noControls #brand, body.noControls #site_content > #canvas {
     display: block; }
-  body .noControls #site_content, body .noControls #site_content > * {
+  body.noControls #site_content, body.noControls #site_content > * {
     width: 100% !important;
     height: 100% !important;
     margin: 0 !important;
@@ -112,6 +112,37 @@ body {
 
 .m0 {
   margin: 0; }
+
+.m-y-30 {
+  margin-top: 30px;
+  margin-bottom: 30px; }
+
+.m-y-5 {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+.m-y-20-sm {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+  @media (min-width: 768px) {
+    .m-y-20-sm {
+      margin-top: 0px;
+      margin-bottom: 0px; } }
+
+.abc-checkbox label {
+  padding-left: 15px; }
+
+.checkbox {
+  margin-top: 5px;
+  margin-bottom: 5px; }
+
+.abc-checkbox-primary input[type="checkbox"]:checked + label::before,
+.abc-checkbox-primary input[type="radio"]:checked + label::before {
+  background-color: #005E81;
+  border-color: #005E81; }
+
+.label-info {
+  background-color: #EBD10E; }
 
 .bottom-controls {
   position: fixed;
@@ -325,12 +356,22 @@ body {
       -webkit-transition: all 0.35s;
       -moz-transition: all 0.35s;
       transition: all 0.35s; }
-      .navbar li a:hover {
+      .navbar li a:hover, .navbar li a:focus, .navbar li a:active {
         background: #2D2D2D;
         background: rgba(45, 45, 45, 0.3);
         -webkit-transition: all 0.35s;
         -moz-transition: all 0.35s;
         transition: all 0.35s; }
+  .navbar span.page-name {
+    width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: block;
+    color: #FFF;
+    font-size: 1.2em;
+    padding-top: 15px;
+    padding-bottom: 15px; }
 
 .modal-content {
   -webkit-border-radius: 0;
@@ -348,20 +389,128 @@ body {
     .modal-header button:hover {
       color: #FFF; }
 
-.modal-body .horizontal-line {
-  border-bottom: 1px solid #005E81; }
-.modal-body h5 {
-  color: #005E81;
-  font-size: 1.2em; }
+.modal-body {
+  padding: 15px; }
+  @media (min-width: 768px) {
+    .modal-body {
+      padding: 15px 60px; } }
+  .modal-body .horizontal-line {
+    border-bottom: 1px solid #005E81; }
+  .modal-body h5 {
+    color: #005E81;
+    font-size: 1.2em;
+    font-weight: bold; }
+  .modal-body .checkboxes-wrapper {
+    height: 40vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 0;
+    list-style: none; }
+    .modal-body .checkboxes-wrapper.checkboxes-wrapper-lg {
+      height: 55vh; }
+    .modal-body .checkboxes-wrapper li {
+      padding: 0; }
+      .modal-body .checkboxes-wrapper li:before {
+        display: table;
+        content: ""; }
+      .modal-body .checkboxes-wrapper li:after {
+        display: table;
+        content: " ";
+        clear: both; }
+      .modal-body .checkboxes-wrapper li:hover {
+        background-color: #EEE; }
+  .modal-body .button-small a {
+    display: block; }
+    .modal-body .button-small a button {
+      margin: auto;
+      display: block;
+      height: 25px;
+      padding: 3px 10px;
+      -webkit-border-radius: 12px;
+      border-radius: 12px;
+      background-clip: padding-box; }
+      @media (min-width: 768px) {
+        .modal-body .button-small a button {
+          padding: 3px 30px; } }
+  .modal-body .dot {
+    width: 20px;
+    height: 20px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background-clip: padding-box;
+    margin: 5px; }
+  .modal-body .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    background-clip: padding-box;
+    background: #EEE;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    margin-top: 30px; }
+  .modal-body .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-clip: padding-box;
+    background: #EBD10E;
+    cursor: pointer; }
+    .modal-body .slider::-webkit-slider-thumb:hover {
+      background: #D4BC09; }
+  .modal-body .slider::-moz-range-thumb {
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background-clip: padding-box;
+    background: #EBD10E;
+    cursor: pointer; }
+    .modal-body .slider::-moz-range-thumb:hover {
+      background: #D4BC09; }
 
 .modal-inner {
   padding-left: 50px;
   padding-right: 50px; }
 
 .modal-footer {
-  border: 0; }
+  border: 0;
+  padding: 30px; }
+  .modal-footer button {
+    height: 40px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    background-clip: padding-box; }
+    .modal-footer button a {
+      color: #FFF;
+      text-decoration: none; }
+      .modal-footer button a:hover {
+        color: #FFF; }
 
-.modal-lg {
-  width: 90%; }
+@media (min-width: 768px) {
+  .modal-lg {
+    width: 90%; } }
+
+#divDatasetList label {
+  font-weight: bold; }
+  @media (min-width: 992px) {
+    #divDatasetList label {
+      font-weight: normal; } }
+
+.datasetItem {
+  padding: 0 0 0 30px; }
+  @media (min-width: 992px) {
+    .datasetItem {
+      padding: 0; } }
+
+label {
+  word-break: break-all; }
 
 /*# sourceMappingURL=styles.css.map */

@@ -23,14 +23,14 @@ LodControl.prototype.updateView = function (controls) {
     if (controls) this.view.updateControls(this);
 }
 
-LodControl.prototype.loadModel = function (url) {
+LodControl.prototype.loadModel = function (url, loadFromUrl, update) {
     if (this.model != null) {
         LodLoader.setPredicates(this.model.predicates);
         LodLoader.setNamespaces(this.model.prefixes);
         this.model.empty();
         this.updateView(false);
     }
-    LodLoader.loadLodModel(this, url);
+    LodLoader.loadLodModel(this, url, loadFromUrl, update);
 }
 
 LodControl.prototype.getMaxFrequency = function () {

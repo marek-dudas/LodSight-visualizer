@@ -5,6 +5,7 @@
     <title>LODSight 0.1</title>
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./node_modules/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css">
     <link rel="stylesheet" href="./styles/graph.css">
     <link rel="stylesheet" href="./styles/styles.min.css">
 </head>
@@ -20,12 +21,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href=".">Brand</a>
+            <span class="page-name" href="#" id="spanDatasetName">Dataset Name</span>
         </div>
 
         <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="#">select dataset</a></li>
+                <li><a href="#" data-toggle="modal" data-target="#dataset-modal">select dataset</a></li>
                 <li><a href="./about.html" target="_blank">about</a></li>
                 <li><a href="./help.html" target="_blank">help</a></li>
             </ul>
@@ -39,30 +40,32 @@
         <iframe src="http://localhost/lodsight-graph-creator">
         </iframe>
         <div>
-            Displayed dataset: <h3 id="spanDatasetName"></h3>
+            Displayed dataset: <h3 id="spanDatasetName_"></h3>
         </div>
     </div>
     <div style="display: none">
         <div>
             <div>
                 <h3>Filtering Tools</h3>
-                <input type="button" value="Update Filters" id="btnUpdate">
+                <input type="button" value="Update Filters" id="btnUpdate_">
             </div>
             <h4>Predicates in the graph:</h4>
             <div id="divPredicateList_">
             </div>
         </div>
         <div>
-            Detail: <span id="spnLOD">100</span>%
-            <input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq">
-            Path frequency threshold: <span id="spnMaxFreq">100</span>%
-            <input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq">
+            Detail: <span id="spnLOD_">100</span>%
+            <input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq_">
+            Path frequency threshold: <span id="spnMaxFreq_">100</span>%
+            <input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq_">
         </div>
-        <div id="divPrefixList">
+        <div id="divPrefixList_">
             <h4>Namespace prefixes:</h4>
         </div>
-        <input type="button" value="Update Filters" id="btnUpdatePredicates">
+        <input type="button" value="Update Filters" id="btnUpdatePredicates_">
     </div>
+
+
     <div id="canvas">
         <span id="brand" title="Click to see this chart on the official LodSight website">LodSight</span>
     </div>
@@ -77,17 +80,21 @@
     <div class="side-controls">
         <div class="side-controls-inner">
             <div class="more-settings">
-                <button class="button btn side-button-small" id="btnLayout" data-placement="top" data-toggle="tooltip" title="auto layout">
+                <button class="button btn side-button-small" id="btnLayout" data-placement="top" data-toggle="tooltip"
+                        title="auto layout">
                     <i class="fa fa-pause"></i>
                 </button>
-                <button class="button btn side-button-small" id="btnFontPlus" data-placement="top" data-toggle="tooltip" title="font size +">
+                <button class="button btn side-button-small" id="btnFontPlus" data-placement="top" data-toggle="tooltip"
+                        title="font size +">
                     <i class="fa fa-plus"></i>
                 </button>
-                <button class="button btn side-button-small" id="btnFontMinus" data-placement="top" data-toggle="tooltip" title="font size -">
+                <button class="button btn side-button-small" id="btnFontMinus" data-placement="top"
+                        data-toggle="tooltip" title="font size -">
                     <i class="fa fa-minus"></i>
                 </button>
             </div>
-            <button class="button btn side-button-large" id="settings" data-placement="top" data-toggle="tooltip" title="settings">
+            <button class="button btn side-button-large" id="settings" data-placement="top" data-toggle="tooltip"
+                    title="settings">
                 <i class="fa fa-cogs fa-2x"></i>
             </button>
             <button class="button btn side-button-large" id="filter" data-toggle="modal" data-target="#filter-modal">
@@ -112,31 +119,93 @@
                     <h4 class="modal-title">filter and level detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="col-md-5">
-                        <div class="modal-inner">
-                            <div class="row horizontal-line text-left">
-                                <h5>predicates in the graph</h5>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="modal-inner">
+                                <div class="row horizontal-line text-left">
+                                    <h5>predicates in the graph</h5>
+                                </div>
+                                <ul id="divPredicateList" class="row checkboxes-wrapper">
+                                </ul>
                             </div>
-                            <div id="divPredicateList">
-
+                        </div>
+                        <div class="col-md-7">
+                            <div class="modal-inner">
+                                <div class="row horizontal-line">
+                                    <div class="col-xs-10 p0">
+                                        <h5>namespaces prefixes</h5>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <h5>node color</h5>
+                                    </div>
+                                </div>
+                                <ul id="divPrefixList" class="row checkboxes-wrapper">
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-7">
-                        <div class="modal-inner">
-                            <div class="row horizontal-line">
-                                <div class="col-xs-10 text-left p0">
-                                    <h5>namespaces prefixes</h5>
+                    <div class="row m-y-30">
+                        <div class="col-sm-6 m-y-20-sm">
+                            <div class="modal-inner">
+                                <div class="row">
+                                    <h5>detail: <span class="label label-info"><span id="spnLOD">100</span>%</span></h5>
+                                    <input type="range" min="0" max="100" value="0" step="5" id="rngMinFreq"
+                                           class="slider">
                                 </div>
-                                <div class="col-xs-2 text-right p0">
-                                    <h5>node color</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 m-y-20-sm">
+                            <div class="modal-inner">
+                                <div class="row">
+                                    <h5>path frequency threshold: <span class="label label-info"><span id="spnMaxFreq">100</span>%</span>
+                                    </h5>
+                                    <input type="range" min="1" max="100" value="100" step="5" id="rngMaxFreq"
+                                           class="slider">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn button" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn button" data-dismiss="modal" id="btnUpdate">update filter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dataset-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">select dataset</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-inner">
+                        <div class="row horizontal-line">
+                            <div class="col-xs-8 col-md-9">
+                                <div class="row">
+                                    <div class="col-md-5 p0">
+                                        <h5>dataset</h5>
+                                    </div>
+                                    <div class="col-md-7 p0">
+                                        <h5>endpoint</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 col-md-3">
+                                <h5>paths found</h5>
+                            </div>
+                        </div>
+                        <ul class="row checkboxes-wrapper checkboxes-wrapper-lg" id="divDatasetList">
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="anchorSelectDatasets">
+                        <button type="button" class="btn button">
+                            load selected
+                        </button>
+                    </a>
                 </div>
             </div>
         </div>

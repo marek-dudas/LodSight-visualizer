@@ -1,12 +1,59 @@
 LodLoader = {};
 
-LodLoader.loadLodModel = function (lodControl, _url) {
-    var url = "";
-    if (_url == null) url = this.createUrl();
-    else url = _url;
+LodLoader.loadLodModel = function (lodControl, _url, loadFromUrl, update) {
+    var lodModel = new LodModel();
 
-    var target = document.getElementById('canvas');
-    this.spinner = new Spinner().spin(target);
+    LodLoader.isDatasetSelected = loadFromUrl;
+
+    if (!LodLoader.datasets) {
+        $.get(datasetsUrl, "", function (data) {
+            LodLoader.datasets = JSON.parse(data);
+            if (!loadFromUrl) {
+                lodControl.viewModel(lodModel);
+            }
+        });
+    }
+
+    if(loadFromUrl || update){
+        var url = "";
+        if (_url == null) url = this.createUrl();
+        else url = _url;
+
+        var target = document.getElementById('canvas');
+        this.spinner = new Spinner().spin(target);
+
+        $.get(url, "", function (data) {
+            var jsonData = JSON.parse(data);
+            lodModel.dataset = jsonData.dataset;
+            lodModel.endpoint = jsonData.endpoint;
+            lodModel.maxFrequency = Number(jsonData.maxFrequency);
+
+            for (var i = 0; i < jsonData.entities.length; i++) {
+                var node = jsonData.entities[i];
+                lodModel.addNode(node.name, node.prefixcc, node.fromCSet);
+            }
+            for (var i = 0; i < jsonData.predicates.length; i++) {
+                var pred = jsonData.predicates[i];
+                lodModel.addPredicate(pred.name, pred.prefixcc, pred.id, pred.selected);
+            }
+            for (var i = 0; i < jsonData.links.length; i++) {
+                var link = jsonData.links[i];
+                if (link.start < 0 || link.start > lodModel.nodes.length || link.end < 0 || link.end > lodModel.nodes.length) {
+                    alert('error in json data on link ' + link.prefix + link.name);
+                }
+                else lodModel.addLink(link.label.name, link.label.prefixcc, lodModel.nodes[link.start], lodModel.nodes[link.end], link.fromCSet, link.frequency);
+            }
+
+            lodModel.prefixes = jsonData.prefixes;
+            lodModel.duplicateDataNodes();
+            LodLoader.spinner.stop();
+
+            if(LodLoader.isUrlNamespaceSet) {
+                LodLoader.setUrlNamespaces(lodModel.prefixes);
+            }
+            lodControl.viewModel(lodModel);
+        });
+    }
 
     /*
      require(["dojo/_base/xhr"],
@@ -19,40 +66,6 @@ LodLoader.loadLodModel = function (lodControl, _url) {
      handleAs: "json",
      // The success handler
      load: function(jsonData) {*/
-
-    $.get(url, "", function (data) {
-        var jsonData = JSON.parse(data);
-        var lodModel = new LodModel();
-        lodModel.dataset = jsonData.dataset;
-        lodModel.endpoint = jsonData.endpoint;
-        lodModel.maxFrequency = Number(jsonData.maxFrequency);
-
-        for (var i = 0; i < jsonData.entities.length; i++) {
-            var node = jsonData.entities[i];
-            lodModel.addNode(node.name, node.prefixcc, node.fromCSet);
-        }
-        for (var i = 0; i < jsonData.predicates.length; i++) {
-            var pred = jsonData.predicates[i];
-            lodModel.addPredicate(pred.name, pred.prefixcc, pred.id, pred.selected);
-        }
-        for (var i = 0; i < jsonData.links.length; i++) {
-            var link = jsonData.links[i];
-            if (link.start < 0 || link.start > lodModel.nodes.length || link.end < 0 || link.end > lodModel.nodes.length) {
-                alert('error in json data on link ' + link.prefix + link.name);
-            }
-            else lodModel.addLink(link.label.name, link.label.prefixcc, lodModel.nodes[link.start], lodModel.nodes[link.end], link.fromCSet, link.frequency);
-        }
-
-        lodModel.prefixes = jsonData.prefixes;
-        lodModel.duplicateDataNodes();
-        LodLoader.spinner.stop();
-
-        if(LodLoader.isUrlNamespaceSet) {
-            LodLoader.setUrlNamespaces(lodModel.prefixes);
-        }
-
-        lodControl.viewModel(lodModel);
-    });
 };
 
 LodLoader.isSummaryIdSet = function () {

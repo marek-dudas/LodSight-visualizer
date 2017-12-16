@@ -114,11 +114,7 @@ LodView.prototype.initControls = function(controller) {
 	});
 	
 	d3.select("#btnUpdate").on("click", function() {
-		controller.loadModel(null);
-	});
-	
-	d3.select("#btnUpdatePredicates").on("click", function() {
-		controller.loadModel(null);
+		controller.loadModel(null, true, true);
 	});
 	
 	d3.select("#rngMinFreq").on("input", function() {
@@ -471,34 +467,173 @@ LodView.prototype.updateView = function(controller) {
 		 });*/
 		 		 
 		this.nodes.exit().remove();
-		 
-		this.prefixes = d3.select("#divPrefixList").selectAll("div");
+		this.prefixes = d3.select("#divPrefixList").selectAll("li");
 	    this.prefixes = this.prefixes.data(this.model.prefixes);
-	    var prefixEnter = this.prefixes.enter().append("div");
-	    prefixEnter.append("input").attr("type", "checkbox")
-	    	.on("mouseup", function(d) {
-	    		d.selected = !d3.select(this).node().checked;
-	    	})
-	    	.property("checked", function(d) {return d.selected});
-	    prefixEnter.append("span")
-		.style("color", function(d) {return view.colors(view.model.getPrefixIndex(d.str))})  //prefixes.indexOf(d.str))})
-    	.text(function (d) {return d.str;});
-	    this.prefixes.exit().remove();    
+	    var prefixEnter = this.prefixes.enter().append("li");
+    	prefixEnter
+			.append("div")
+			.attr("class", "checkbox abc-checkbox abc-checkbox-primary col-xs-10")
+            .each(function(d){
+                d3.select(this)
+					.append("input")
+                    .attr("type", "checkbox")
+                    .attr("id", function(d) {return 'i_'+d.id})
+                    .on("change", function(d) {
+                        d.selected = d3.select(this).node().checked;
+                    })
+                    .property("checked", function(d) {return d.selected});
+                d3.select(this)
+					.append("label")
+                    .attr("for", function(d) {
+                        return 'i_'+d.id
+                    })
+					.each(function(d){
+                        d3.select(this)
+							.append("strong")
+							.text(d.prefix);
+                        d3.select(this)
+							.append("span")
+							.text(":"+d.namespace);
+					});
+
+            });
+		prefixEnter
+			.append("div")
+			.attr("class", "col-xs-2")
+			.append("div")
+			.attr("class", "dot")
+			.style("background-color", function(d) {
+		 		return view.colors(view.model.getPrefixIndex(d.str))
+		 	});  //prefixes.indexOf(d.str))})
+	    this.prefixes.exit().remove();
 	    
-	    this.predicates = d3.select("#divPredicateList").selectAll("tr");
+	    this.predicates = d3.select("#divPredicateList").selectAll("li");
 	    this.predicates = this.predicates.data(this.model.predicates);
-	    var predicateRows = this.predicates.enter().append("tr").style("margin", "none");
-	    predicateRows.append("td").append("input")
-    	.attr("type", "checkbox")
-    	.on("mouseup", function(d) {
-    			d.selected = !d3.select(this).node().checked;
+	    var predicateRows = this.predicates.enter().append("li").append("div").attr("class", "checkbox abc-checkbox abc-checkbox-primary");
+	    predicateRows.append("input")
+    		.attr("type", "checkbox")
+    		.attr("id", function(d) {return 'i_'+d.id})
+    		.on("change", function(d) {
+    			d.selected = d3.select(this).node().checked;
     		})
-    	.property("checked", function(d) {return d.selected});
-	    predicateRows.append("td").text(function(d) {return d.getName();});
+    		.property("checked", function(d) {return d.selected});
+		predicateRows.append("label")
+			.attr("for", function(d) {
+				return 'i_'+d.id
+			})
+			.each(function(d){
+				d3.select(this)
+					.append("strong")
+					.text(d.prefix)
+				d3.select(this)
+					.append("span")
+					.text(":"+d.name)
+			});
 	    this.predicates.exit().remove();
-    
-    d3.select("#spanDatasetName").text(this.model.dataset);
-    
+
+    d3.select("#spanDatasetName").text(this.model.dataset.split(",").slice(0, 2));
+
     if(this.layoutRunning) this.layout.start();
     this.tick();
+
+    this.datasets = d3.select("#divDatasetList").selectAll("li");
+    this.datasets = this.datasets.data(LodLoader.datasets.data);
+    var sumIdsArray = [];
+    var datasetEnter = this.datasets.enter().append("li");
+    datasetEnter
+        .append("div")
+        .attr("class", "col-xs-8 col-md-9")
+		.append("div")
+		.attr("class", "row")
+        .each(function(d){
+            d3.select(this)
+                .append("div")
+                .attr("class", "checkbox abc-checkbox abc-checkbox-primary col-md-5 p0")
+                .each(function(d){
+                    d3.select(this)
+                        .append("input")
+                        .attr("type", "checkbox")
+                        .attr("id", function(d) {return 'i_'+d.sumId})
+                        .on("change", function(d) {
+                            var url = window.location.origin + window.location.pathname + "?";
+                        	if(d3.select(this).node().checked){
+                        		if(sumIdsArray.indexOf(d.sumId) === -1) {
+                                    sumIdsArray.push(d.sumId);
+                                }
+							}else{
+                                var index = sumIdsArray.indexOf(d.sumId);
+                                if (index > -1) {
+                                    sumIdsArray.splice(index, 1);
+                                }
+							}
+                            sumIdsArray.forEach(function(item, index){
+                            	url += "sumid="+item +"&"
+							});
+                        	url += "minfreq="+LodLoader.datasets.minFreq +"&maxfreq="+LodLoader.datasets.maxFreq;
+                        	d3.select("#anchorSelectDatasets").attr("href", url);
+                        })
+                    d3.select(this)
+                        .append("label")
+                        .attr("for", function(d) {
+                            return 'i_'+d.sumId
+                        })
+                        .text(function(d) {
+                            return d.dataset
+                        });
+
+                });
+            d3.select(this)
+                .append("div")
+                .attr("class", "col-md-7 datasetItem")
+                .append("div")
+                .attr("class", "m-y-5")
+                .text(function(d) {
+                    return d.endpoint
+                });
+
+        });
+
+    datasetEnter
+        .append("div")
+        .attr("class", "col-xs-4 col-md-3")
+		.append("div")
+        .attr("class", "row")
+        .each(function(d){
+            d3.select(this)
+				.append("div")
+				.attr("class", "col-xs-4 col-md-6")
+                .append("div")
+                .attr("class", "m-y-5")
+                .text(function(d) {
+                    return d.pathCount
+                });
+            d3.select(this)
+                .append("div")
+                .attr("class", "col-xs-8 col-md-6 button-small")
+                .append("div")
+                .attr("class", "m-y-5")
+                .append("a")
+                .attr("href", function(d) {
+                    return d.url
+                })
+				.append("button")
+				.attr("type", "button")
+				.attr("class", "btn button")
+                .each(function(d){
+                    d3.select(this)
+						.append("span")
+						.attr("class", "hidden visible-xs")
+						.append("i")
+						.attr("class", "fa fa-arrow-circle-o-right");
+                    d3.select(this)
+						.append("span")
+						.attr("class", "hidden-xs")
+						.text("load")
+                });
+        });
+    this.datasets.exit().remove();
+
+    if(!LodLoader.isDatasetSelected){
+    	$("#dataset-modal").modal();
+	}
 };

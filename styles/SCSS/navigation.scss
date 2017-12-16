@@ -13,10 +13,23 @@
       color: $textLight;
       font-size: 1.3em;
       @include hoverTransition();
-      &:hover{
+      &:hover, &:focus, &:active{
         @include dark-opacity();
         @include hoverTransition();
       }
+    }
+  }
+  span{
+    &.page-name{
+      width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      color: $textLight;
+      font-size: 1.2em;
+      padding-top: 15px;
+      padding-bottom: 15px;
     }
   }
 }
